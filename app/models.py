@@ -1,6 +1,6 @@
 from app import db, login_manager
 from flask_login import UserMixin
-
+from datetime import datetime, timezone
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -18,3 +18,4 @@ class Student(db.Model, UserMixin):
     password = db.Column(db.String(255), nullable=False)
     status = db.Column(db.String(20), default='unverified')
     student_type = db.Column(db.String(20), nullable=True)
+    date_created = db.Column(db.DateTime, default= lambda: datetime.now(timezone.utc))

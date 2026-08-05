@@ -39,3 +39,30 @@ class Staff(db.Model, UserMixin):
 
     def get_id(self):
         return f'staff_{self.id}'
+
+class DocumentType(db.Model):
+    __tablename__ = 'document_types'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    fee = db.Column(db.Numeric(10, 2), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    date_created = db.Column(db.DateTime, default= lambda: datetime.now(timezone.utc))
+
+class DocumentRequest(db.Model):
+    __tablename__ = 'document_requests'
+
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
+    document_type_id = db.Column(db.Integer, db.ForeignKey('document_types.id'), nullable=False)
+    status = db.Column(db.String(20))
+    or_photo_path = db.Column(db.String(255), nullable=True)
+    payment_method = db.Column(db.String(50), nullable=True)
+    remarks = db.Column(db.Text, nullable=True)
+    date_requested = db.Column(db.DateTime, default= lambda: datetime.now(timezone.utc))
+    date_completed = db.Column(db.DateTime, nullable=True)
+    handled_by = db.Column(db.Integer, db.ForeignKey('staff.id'), nullable=True)
+
+    student = db.relationship('Student', backref=db.backref('document_requests', lazy=True))
+    document_type = db.relationship('DocumentType', backref=db.backref('document_requests', lazy=True))
+    staff = db.relationship('Staff', backref=db.backref('document_requests', lazy=True))

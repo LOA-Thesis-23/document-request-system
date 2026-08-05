@@ -1,23 +1,13 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from dotenv import load_dotenv
-import os
+from flask import redirect, url_for
+from app import create_app
 
-load_dotenv()
+app = create_app()
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
 
 @app.route('/')
-def home():
-    try:
-        db.session.execute(db.text('SELECT 1'))
-        return 'Flask is running AND successfully connected to the database!'
-    except Exception as e:
-        return f'Flask is running, but database connection FAILED: {e}'
+def index():
+    return redirect(url_for('auth.login'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

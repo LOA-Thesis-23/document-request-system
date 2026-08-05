@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-<div class=landing-container>
+<div class="landing-wrappezr">
+
+    <div class="branding-panel">
+        <img src="{{ url_for('static', filename='images/loalogo.png') }}" alt="Lyceum of Alabang Logo" class="logo">
+        <h2>Document Request System</h2>
+        <p>Request your academic documents online — fast, simple, and secure.</p>
+    </div>
+
     <div class="modal-container">
 
         {% with messages = get_flashed_messages() %}
@@ -17,6 +24,7 @@
         {% include "auth/signup.html" %}
 
     </div>
+
 </div>
 
 <script>

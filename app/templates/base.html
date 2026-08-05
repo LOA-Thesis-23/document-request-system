@@ -2,13 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Navigation - Document Request System</title> 
+    <title>Lyceum of Alabang - Tunasan</title> 
+     <link rel="icon" href="{{ url_for('static', filename='images/loalogo.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/redo.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <nav>
+    <header>
+            <p>Km. 30 National Road, Tunasan, Muntinlupa City</p>
+    </header>
+    <nav class="navbar">
         <h1>Lyceum of Alabang</h1>
-        <h4>Document Request System</h4>
+        <br>
     </nav>
 {% block content %}
 {% endblock %}

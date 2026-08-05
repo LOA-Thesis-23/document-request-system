@@ -66,3 +66,24 @@ class DocumentRequest(db.Model):
     student = db.relationship('Student', backref=db.backref('document_requests', lazy=True))
     document_type = db.relationship('DocumentType', backref=db.backref('document_requests', lazy=True))
     staff = db.relationship('Staff', backref=db.backref('document_requests', lazy=True))
+
+class StatusHistory(db.Model):
+    __tablename__ = 'status_history'
+
+    id = db.Column(db.Integer, primary_key=True)
+    document_request_id = db.Column(db.Integer, db.ForeignKey('document_requests.id'), nullable=False)
+    from_status = db.Column(db.String(20), nullable=False)
+    to_status = db.Column(db.String(20), nullable=False)
+    action = db.Column(db.String(50), nullable=False)
+    staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'), nullable=False)
+    document_request = db.relationship('DocumentRequest', backref=db.backref('status_history', lazy=True))
+    staff = db.relationship('Staff', backref=db.backref('status_changes', lazy=True))
+    timestamp = db.Column(db.DateTime, default= lambda: datetime.now(timezone.utc))
+
+class SystemSettings(db.Model):
+    __tablename__ = 'system_settings'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    value = db.Column(db.Boolean, nullable=False)
+    description = db.Column(db.Text, nullable=True)

@@ -1,0 +1,41 @@
+.landing-wrapper {
+    position: relative;
+    min-height: 100vh;
+    background-image: url("/static/images/loa.png");
+    background-size: cover;
+    background-position: center;
+}
+
+
+.branding-panel {
+    max-width: 500px;
+}
+
+.branding-panel img {
+    width: 100px;
+    margin-bottom: 1rem;
+}
+
+.modal-container {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    width: 380px;
+    
+}
+
+
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #004285;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #ffffff;
+}
+

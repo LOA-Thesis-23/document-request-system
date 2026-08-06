@@ -5,6 +5,8 @@ from app.models import Student
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
+VALID_STUDENT_TYPES = ['current', 'graduate', 'transferee', 'inactive']
+
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -27,6 +29,10 @@ def register():
         
         if not student_number:
             student_number = None  # Set to None if not provided
+
+        if student_type and student_type not in VALID_STUDENT_TYPES:
+            flash('Invalid student type. Please select a valid option.')
+            return redirect(url_for('auth.register'))
 
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 

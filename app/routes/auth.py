@@ -75,9 +75,9 @@ def login():
 
     return render_template('modals/studentside.html')
 
-
 @auth_bp.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('auth.login'))
+    flash('You have been logged out.')
+    return redirect(url_for('index'))

@@ -10,6 +10,11 @@
 
     <div class="modal-container">
 
+
+
+        {% include "auth/login.html" %}
+        {% include "auth/register.html" %}
+
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <ul>
@@ -19,10 +24,6 @@
                 </ul>
             {% endif %}
         {% endwith %}
-
-        {% include "auth/login.html" %}
-        {% include "auth/signup.html" %}
-
     </div>
 
 </div>

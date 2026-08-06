@@ -2,4 +2,8 @@
 {% block content %}
     <h1>Student Side</h1>
     <p>Welcome to the student side!</p>
+
+    <div>
+        <button><a href="{{ url_for('auth.logout') }}">Log out</a></button>
+    </div>
 {% endblock %}

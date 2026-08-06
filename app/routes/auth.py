@@ -24,6 +24,9 @@ def register():
         if existing_student:
             flash('Email already registered. Please log in.')
             return redirect(url_for('auth.login'))
+        
+        if not student_number:
+            student_number = None  # Set to None if not provided
 
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 

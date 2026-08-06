@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lyceum of Alabang - Tunasan</title> 
+     <link rel="icon" href="{{ url_for('static', filename='images/loalogo.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/redo.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+            <p>Km. 30 National Road, Tunasan, Muntinlupa City</p>
+    </header>
+    <nav class="navbar">
+        <h1>Lyceum of Alabang</h1>
+        <br>
+    </nav>
+{% block content %}
+{% endblock %}
+</body>
+</html>

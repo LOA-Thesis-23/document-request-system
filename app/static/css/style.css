@@ -3,12 +3,25 @@
     min-height: 100vh;
     background-image: url("/static/images/loa.png");
     background-size: cover;
-    background-position: center;
 }
 
+header{
+    background-color: #ffffff;
+    display:float   ;
+    padding: 1rem;
+}
+
+footer{
+    background-color: #004285;
+    color: #ffffff;
+    display: float;
+    padding: 1rem;
+}
 
 .branding-panel {
     max-width: 500px;
+    display:float;
+    padding: 2rem;
 }
 
 .branding-panel img {
@@ -31,7 +44,7 @@
 
 
 .navbar {
-    display: flex;
+    display: float;
     align-items: center;
     padding: 1rem 2rem;
     background-color: #004285;

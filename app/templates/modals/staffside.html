@@ -3,4 +3,9 @@
 {% block content %}
     <h1>Staff Side</h1>
     <p>Welcome to the staff side!</p>
+
+    <div>
+        <button><a href="{{ url_for('staff.logout') }}">Log out</a></button>
+    </div>
+        
 {% endblock %}

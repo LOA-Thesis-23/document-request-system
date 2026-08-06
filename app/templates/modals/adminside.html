@@ -3,4 +3,8 @@
 {% block content %}
     <h1>Admin Side</h1>
     <p>Welcome to the admin side!</p>
+
+        <div>
+            <button><a href="{{ url_for('admin.logout') }}">Log out</a></button>
+        </div>
 {% endblock %}

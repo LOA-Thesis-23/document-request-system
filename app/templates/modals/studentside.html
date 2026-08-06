@@ -6,4 +6,35 @@
     <div>
         <button><a href="{{ url_for('auth.logout') }}">Log out</a></button>
     </div>
+
+    <section class="dashboard">
+        <h2>My Requests</h2>
+
+        {% if requests %}
+        <table class="requests-table">
+            <thead>
+                <tr>
+                    <th>Request Type</th>
+                    <th>Date Submitted</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in requests %}
+                <tr>
+                    <td>{{ req.document_type.name }}</td>
+                    <td>{{ req.date_requested.strftime('%Y-%m-%d') }}</td>
+                    <td>
+                        <span class="status-badge status-{{ req.status|lower|replace(' ', '-') }}">
+                            {{ req.status }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>You haven't submitted any requests yet.</p>
+        {% endif %}
+    </section>
 {% endblock %}

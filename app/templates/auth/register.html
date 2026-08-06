@@ -1,8 +1,17 @@
 <div id="signup-view" style="display: none;">
-    <h1>Sign Up</h1>
-    <form method="POST" action="{{ url_for('auth.signup') }}">
+    <h1>Register</h1>
+    <form method="POST" action="{{ url_for('auth.register') }}">
         <label>Full Name:</label><br>
         <input type="text" name="full_name" required><br><br>
+
+        <!--label>First Name:</label><br>
+        <input type="text" name="first_name" required><br><br>
+
+        <label>Last Name:</label><br>
+        <input type="text" name="last_name" required><br><br>
+
+        <label>Middle Name:</label><br>
+        <input type="text" name="middle_name" required><br><br-->
 
         <label>Email:</label><br>
         <input type="email" name="email" required><br><br>

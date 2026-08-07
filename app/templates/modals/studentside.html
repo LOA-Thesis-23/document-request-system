@@ -1,40 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Student Side</h1>
-    <p>Welcome to the student side!</p>
-
-    <div>
-        <button><a href="{{ url_for('auth.logout') }}">Log out</a></button>
+<div class="dashboard-wrapper">
+    <div class="dashboard-header">
+        <div>
+            <h1>Welcome, {{ current_user.full_name }}</h1>
+            <p class="subtext">Here's an overview of your document requests.</p>
+        </div>
+        <a class="btn-logout" href="{{ url_for('auth.logout') }}">Log out</a>
     </div>
 
-    <section class="dashboard">
-        <h2>My Requests</h2>
-
-        {% if requests %}
-        <table class="requests-table">
-            <thead>
-                <tr>
-                    <th>Request Type</th>
-                    <th>Date Submitted</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for req in requests %}
-                <tr>
-                    <td>{{ req.document_type.name }}</td>
-                    <td>{{ req.date_requested.strftime('%Y-%m-%d') }}</td>
-                    <td>
-                        <span class="status-badge status-{{ req.status|lower|replace(' ', '-') }}">
-                            {{ req.status }}
-                        </span>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <p>You haven't submitted any requests yet.</p>
-        {% endif %}
-    </section>
+    {% include "modals/student_dashboard.html" %}
+</div>
 {% endblock %}

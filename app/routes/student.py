@@ -1,5 +1,7 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
+from app import db
+from app.models import DocumentType, DocumentRequest
 
 student_bp = Blueprint('student', __name__, url_prefix='/student')
 
@@ -12,4 +14,26 @@ def home():
         key=lambda r: r.date_requested,
         reverse=True
     )
-    return render_template('modals/studentside.html', requests=requests)
+    document_types = DocumentType.query.order_by(DocumentType.name).all()
+    return render_template(
+        'modals/studentside.html',
+        requests=requests,
+        document_types=document_types
+    )
+
+
+@student_bp.route('/request-form/submit/<int:doc_type_id>', methods=['POST'])
+@login_required
+def submit_request(doc_type_id):
+    doc_type = DocumentType.query.get_or_404(doc_type_id)
+
+    new_request = DocumentRequest(
+        student_id=current_user.id,
+        document_type_id=doc_type.id,
+        status='Submitted'
+    )
+    db.session.add(new_request)
+    db.session.commit()
+
+    flash(f'Your request for {doc_type.name} has been submitted.')
+    return redirect(url_for('student.home'))

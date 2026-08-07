@@ -168,3 +168,85 @@ footer {
     padding: 3rem 1rem;
     color: #9ca3af;
 }
+
+
+.tab-nav {
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.tab-link {
+    background: none;
+    border: none;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.tab-link:hover {
+    color: #004285;
+}
+
+.tab-link.active {
+    color: #004285;
+    border-bottom-color: #004285;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.35rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+}
+
+.form-group input:disabled {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.btn-secondary {
+    background: none;
+    border: 1px solid #d1d5db;
+    color: #374151;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 0.5rem;
+}

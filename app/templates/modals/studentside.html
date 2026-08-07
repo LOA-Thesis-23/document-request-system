@@ -4,11 +4,20 @@
     <div class="dashboard-header">
         <div>
             <h1>Welcome, {{ current_user.full_name }}</h1>
-            <p class="subtext">Here's an overview of your document requests.</p>
         </div>
-        <a class="btn-logout" href="{{ url_for('auth.logout') }}">Log out</a>
+        <a class="btn-primary" href="{{ url_for('auth.logout') }}">Log out</a>
     </div>
 
+    <div class="dashboard-wrapper">
+    <div class="dashboard-header">
+        <div>
+            <h1>Request a Document</h1>
+            <p class="subtext">Choose a document type below to start a new request.</p>
+        </div>
+
+    </div>
+    {% include "modals/student_request_form.html" %}
     {% include "modals/student_dashboard.html" %}
+    </div>
 </div>
 {% endblock %}

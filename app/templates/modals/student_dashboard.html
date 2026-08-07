@@ -1,0 +1,32 @@
+    <section class="dashboard">
+        <h2>My Requests</h2>
+
+        {% if requests %}
+        <table class="requests-table">
+            <thead>
+                <tr>
+                    <th>Request Type</th>
+                    <th>Date Submitted</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in requests %}
+                <tr>
+                    <td>{{ req.document_type.name }}</td>
+                    <td>{{ req.date_requested.strftime('%b %d, %Y') }}</td>
+                    <td>
+                        <span class="status-badge status-{{ req.status|lower|replace(' ', '-') }}">
+                            {{ req.status }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <p>You haven't submitted any requests yet.</p>
+        </div>
+        {% endif %}
+    </section>

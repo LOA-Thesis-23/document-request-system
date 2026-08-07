@@ -69,6 +69,8 @@ def login():
         
         if staff and bcrypt.check_password_hash(staff.password, password):
             login_user(staff)
+            if staff.role == 'admin':
+                return redirect(url_for('admin.home'))  # redirect for admin
             return redirect(url_for('staff.home'))
 
         student = Student.query.filter_by(email=email).first()

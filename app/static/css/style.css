@@ -1,3 +1,4 @@
+/* ===== Landing Page ===== */
 .landing-wrapper {
     position: relative;
     min-height: 100vh;
@@ -7,22 +8,17 @@
 
 header {
     background-color: #ffffff;
-    display:float   ;
     padding: 0.5rem;
 }
 
 footer {
     background-color: #004285;
     color: #ffffff;
-    display:content;
-    padding :1rem;
-
-
+    padding: 1rem;
 }
 
 .branding-panel {
     max-width: 500px;
-    display:float;
     padding: 2rem;
 }
 
@@ -41,39 +37,42 @@ footer {
     border-radius: 12px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
     width: 380px;
-    
 }
 
-
+/* ===== Navbar ===== */
 .navbar {
-    display: float;
+    display: flex;
     align-items: center;
     padding: 1rem 2rem;
     background-color: #004285;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     color: #ffffff;
 }
+
+.navbar2 {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: #fffb00;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #ffffff;
+}
+
+
+/* ===== Student Dashboard Shell (studentside.html) ===== */
 .dashboard-wrapper {
     display: flex;
     flex-direction: column;
+    gap: 2rem;
     min-height: 100vh;
     padding: 2rem;
     background-color: #f5f7fa;
-}
-
-.dashboard {
-    padding: 2rem;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .dashboard-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
 }
 
 .dashboard-header h1 {
@@ -81,27 +80,46 @@ footer {
     color: #004285;
 }
 
+/* Each included section (request form, requests dashboard) gets its own card */
+.dashboard {
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #1f2937;
+}
+
 .subtext {
-    margin: 0;
+    margin: 0 0 1rem 0;
     color: #6b7280;
     font-size: 0.9rem;
 }
 
-.btn-logout {
+/* ===== Buttons ===== */
+.btn-primary {
+    display: inline-block;
     background-color: #004285;
     color: #ffffff;
     text-decoration: none;
+    border: none;
     padding: 0.6rem 1.2rem;
     border-radius: 6px;
     font-size: 0.9rem;
     font-weight: 600;
+    cursor: pointer;
     transition: background-color 0.15s ease;
 }
 
-.btn-logout:hover {
+.btn-primary:hover {
     background-color: #003166;
 }
 
+/* ===== Shared Table Styling (requests + request form) ===== */
 .requests-table {
     width: 100%;
     border-collapse: collapse;
@@ -112,6 +130,7 @@ footer {
     text-align: left;
     padding: 0.85rem 0.75rem;
     border-bottom: 1px solid #e5e7eb;
+    vertical-align: middle;
 }
 
 .requests-table th {
@@ -121,6 +140,11 @@ footer {
     color: #6b7280;
 }
 
+.requests-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+/* ===== Status Badges ===== */
 .status-badge {
     display: inline-block;
     padding: 0.3rem 0.7rem;
@@ -129,15 +153,16 @@ footer {
     font-weight: 600;
 }
 
-.status-submitted    { background: #e5e7eb; color: #374151; }
-.status-or-review    { background: #fde68a; color: #92400e; }
-.status-in-process   { background: #fef08a; color: #854d0e; }
+.status-submitted            { background: #e5e7eb; color: #374151; }
+.status-or-review            { background: #fde68a; color: #92400e; }
+.status-in-process           { background: #fef08a; color: #854d0e; }
 .status-waiting-for-approval { background: #ddd6fe; color: #5b21b6; }
-.status-on-hold      { background: #fecaca; color: #991b1b; }
-.status-encoding     { background: #bfdbfe; color: #1e40af; }
-.status-releasing    { background: #a5f3fc; color: #155e75; }
-.status-claimed      { background: #bbf7d0; color: #166534; }
+.status-on-hold               { background: #fecaca; color: #991b1b; }
+.status-encoding              { background: #bfdbfe; color: #1e40af; }
+.status-releasing             { background: #a5f3fc; color: #155e75; }
+.status-claimed               { background: #bbf7d0; color: #166534; }
 
+/* ===== Empty States ===== */
 .empty-state {
     text-align: center;
     padding: 3rem 1rem;

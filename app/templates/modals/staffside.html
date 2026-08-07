@@ -1,11 +1,5 @@
-{%
-    extends "base.html" %}
-{% block content %}
-    <h1>Staff Side</h1>
-    <p>Welcome to the staff side!</p>
-
-    <div>
-        <button><a href="{{ url_for('staff.logout') }}">Log out</a></button>
-    </div>
-        
-{% endblock %}
+{% if role == 'registrar' %}
+    <h1>Registrar Dashboard</h1>
+{% elif role == 'cashier' %}
+    <h1>Cashier Dashboard</h1>
+{% endif %}

@@ -1,50 +1,90 @@
+/* ===== Landing Page ===== */
 .landing-wrapper {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content:flex-start;
     min-height: 100vh;
+    padding: 0 6%;
     background-image: url("/static/images/loa.png");
     background-size: cover;
+    box-sizing: border-box;
 }
 
-header{
+.navbar-logo {
+    height:auto;
+    width:10%;
+}
+
+.brand-landing {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.eyebrow {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.8;
+}
+
+.brand-landing h1 {
+    font-size: 3.25rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.brand-landing p {
+    font-size: 1.5zrem;
+    line-height: 1.6;
+    opacity: 0.9;
+    max-width: 420px;
+}
+
+header {
     background-color: #ffffff;
-    display:float   ;
-    padding: 1rem;
+    padding: 0.5rem;
 }
 
-footer{
+footer {
     background-color: #004285;
     color: #ffffff;
-    display: float;
     padding: 1rem;
 }
 
 .branding-panel {
     max-width: 500px;
-    display:float;
     padding: 2rem;
+    position:relative;
 }
 
+
 .branding-panel img {
-    width: 100px;
+    width: 20rem;
     margin-bottom: 1rem;
+    
 }
+
 
 .modal-container {
     position: absolute;
-    right: 5%;
+    right: 20%;
     top: 50%;
     transform: translateY(-50%);
     background-color: #ffffff;
     padding: 2.5rem;
     border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 30px rgba(53, 49, 39, 0.2);
     width: 380px;
-    
+    border-style: solid;
 }
 
-
+/* ===== Navbar ===== */
 .navbar {
-    display: float;
+    display: flex;
     align-items: center;
     padding: 1rem 2rem;
     background-color: #004285;
@@ -52,3 +92,245 @@ footer{
     color: #ffffff;
 }
 
+.navbar2 {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: #fffb00;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #ffffff;
+}
+
+
+/* ===== Student Dashboard Shell (studentside.html) ===== */
+.dashboard-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-height: 100vh;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f5f7fa;
+}
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dashboard-header h1 {
+    margin: 0 0 0.25rem 0;
+    color: #004285;
+}
+
+/* Each included section (request form, requests dashboard) gets its own card */
+.dashboard {
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+
+}
+
+.dashboard h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #1f2937;
+}
+
+.subtext {
+    margin: 0 0 1rem 0;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+/* ===== Buttons ===== */
+.btn-primary {
+    display: inline-block;
+    background-color: #004285;
+    color: #ffffff;
+    text-decoration: none;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.btn-primary:hover {
+    background-color: #003166;
+}
+
+
+/* ===== Shared Table Styling (requests + request form) ===== */
+.requests-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.requests-table th,
+.requests-table td {
+    text-align: left;
+    padding: 0.85rem 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: middle;
+}
+
+.requests-table th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #6b7280;
+}
+
+.requests-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+/* ===== Status Badges ===== */
+.status-badge {
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-submitted            { background: #e5e7eb; color: #374151; }
+.status-or-review            { background: #fde68a; color: #92400e; }
+.status-in-process           { background: #fef08a; color: #854d0e; }
+.status-waiting-for-approval { background: #ddd6fe; color: #5b21b6; }
+.status-on-hold               { background: #fecaca; color: #991b1b; }
+.status-encoding              { background: #bfdbfe; color: #1e40af; }
+.status-releasing             { background: #a5f3fc; color: #155e75; }
+.status-claimed               { background: #bbf7d0; color: #166534; }
+
+/* ===== Empty States ===== */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #9ca3af;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.5rem;
+}
+
+.form-grid .form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.btn-secondary {
+    background: none;
+    border: 1px solid #d1d5db;
+    color: #374151;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 0.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.35rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+}
+
+.form-group input:disabled {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+.tab-nav {
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.tab-link {
+    background: none;
+    border: none;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.tab-link:hover {
+    color: #004285;
+}
+
+.tab-link.active {
+    color: #004285;
+    border-bottom-color: #004285;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+
+.auth-view h1 {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.5rem;
+
+}
+
+.btn-block {
+    width: 100%;
+    text-align: center;
+}
+
+.btn-link {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    color: #004285;
+    font-size: 0.85rem;
+    text-align: center;
+    margin-top: 1rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.btn-link:hover {
+    color: #003166;
+}

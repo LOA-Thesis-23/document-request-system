@@ -8,17 +8,19 @@
    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <header>
+    <!--header class="header-base">
             <p>Km. 30 National Road, Tunasan, Muntinlupa City</p>
-    </header>
-    <nav class="navbar">
-        <h1>Lyceum of Alabang</h1>
-        <br>
+    </header-->
+        <nav class="navbar">
+            <img src="{{ url_for('static', filename='images/Heading.png') }}" alt="Lyceum of Alabang" class="navbar-logo">
+        </nav>
+    <nav class="navbar2">
+        <h1></h1>
     </nav>
 {% block content %}
 {% endblock %}
-    <footer class="footer">
-        <p>&copy; 2026 Lyceum of Alabang. All rights reserved.</p>
+    <footer class="footer-base">
+        <p>&copy; 2026 Lyceum of Alabang. All rights reserved..</p>
     </footer>
 
 </body>

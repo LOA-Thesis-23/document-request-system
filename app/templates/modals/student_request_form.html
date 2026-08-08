@@ -1,0 +1,33 @@
+
+    <section class="dashboard">
+        {% if document_types %}
+        <table class="requests-table">
+            <thead>
+                <tr>
+                    <th>Document Type</th>
+                    <th>Fee</th>
+                    <th>Description</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doc in document_types %}
+                <tr>
+                    <td>{{ doc.name }}</td>
+                    <td>₱{{ '%.2f'|format(doc.fee) }}</td>
+                    <td>{{ doc.description or '—' }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('student.submit_request', doc_type_id=doc.id) }}">
+                            <button type="submit" class="btn-primary">Request</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <p>No document types are available to request right now.</p>
+        </div>
+        {% endif %}
+    </section>

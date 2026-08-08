@@ -37,3 +37,13 @@ def submit_request(doc_type_id):
 
     flash(f'Your request for {doc_type.name} has been submitted.')
     return redirect(url_for('student.home'))
+
+@student_bp.route('/profile/update', methods=['POST'])
+@login_required
+def update_profile():
+    current_user.full_name = request.form.get('full_name')
+    current_user.email = request.form.get('email')
+    db.session.commit()
+
+    flash('Profile updated successfully.')
+    return redirect(url_for('student.home'))

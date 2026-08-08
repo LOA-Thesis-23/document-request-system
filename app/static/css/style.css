@@ -1,9 +1,47 @@
 /* ===== Landing Page ===== */
 .landing-wrapper {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content:flex-start;
     min-height: 100vh;
+    padding: 0 6%;
     background-image: url("/static/images/loa.png");
     background-size: cover;
+    box-sizing: border-box;
+}
+
+.navbar-logo {
+    height:auto;
+    width:10%;
+}
+
+.brand-landing {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.eyebrow {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.8;
+}
+
+.brand-landing h1 {
+    font-size: 3.25rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.brand-landing p {
+    font-size: 1.5zrem;
+    line-height: 1.6;
+    opacity: 0.9;
+    max-width: 420px;
 }
 
 header {
@@ -20,23 +58,28 @@ footer {
 .branding-panel {
     max-width: 500px;
     padding: 2rem;
+    position:relative;
 }
 
+
 .branding-panel img {
-    width: 100px;
+    width: 20rem;
     margin-bottom: 1rem;
+    
 }
+
 
 .modal-container {
     position: absolute;
-    right: 5%;
+    right: 20%;
     top: 50%;
     transform: translateY(-50%);
     background-color: #ffffff;
     padding: 2.5rem;
     border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 30px rgba(53, 49, 39, 0.2);
     width: 380px;
+    border-style: solid;
 }
 
 /* ===== Navbar ===== */
@@ -119,6 +162,7 @@ footer {
 .btn-primary:hover {
     background-color: #003166;
 }
+
 
 /* ===== Shared Table Styling (requests + request form) ===== */
 .requests-table {
@@ -260,4 +304,33 @@ footer {
 
 .tab-content.active {
     display: block;
+}
+
+
+.auth-view h1 {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.5rem;
+
+}
+
+.btn-block {
+    width: 100%;
+    text-align: center;
+}
+
+.btn-link {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    color: #004285;
+    font-size: 0.85rem;
+    text-align: center;
+    margin-top: 1rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.btn-link:hover {
+    color: #003166;
 }

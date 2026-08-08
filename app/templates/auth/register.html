@@ -1,43 +1,50 @@
-<div id="signup-view" style="display: none;">
+<div id="signup-view" class="auth-view" style="display: none;">
     <h1>Register</h1>
+
     <form method="POST" action="{{ url_for('auth.register') }}">
-        <label>Full Name:</label><br>
-        <input type="text" name="full_name" required><br><br>
+        <div class="form-group">
+            <label for="full_name">Full Name</label>
+            <input type="text" id="full_name" name="full_name" required>
+        </div>
 
-        <!--label>First Name:</label><br>
-        <input type="text" name="first_name" required><br><br>
+        <div class="form-group">
+            <label for="reg-email">Email</label>
+            <input type="email" id="reg-email" name="email" required>
+        </div>
 
-        <label>Last Name:</label><br>
-        <input type="text" name="last_name" required><br><br>
+        <div class="form-group">
+            <label for="birthdate">Birthdate</label>
+            <input type="date" id="birthdate" name="birthdate" required>
+        </div>
 
-        <label>Middle Name:</label><br>
-        <input type="text" name="middle_name" required><br><br-->
+        <div class="form-group">
+            <label for="student_number">Student Number (optional)</label>
+            <input type="text" id="student_number" name="student_number">
+        </div>
 
-        <label>Email:</label><br>
-        <input type="email" name="email" required><br><br>
+        <div class="form-group">
+            <label for="student_type">Student Type</label>
+            <select id="student_type" name="student_type" required>
+                <option value="" disabled selected>Select type</option>
+                <option value="current">Current/Enrolled</option>
+                <option value="graduate">Graduate/Alumnus</option>
+                <option value="transferee">Transferee/Shiftee</option>
+                <option value="inactive">Inactive/LOA</option>
+            </select>
+        </div>
 
-        <label>Birthdate:</label><br>
-        <input type="date" name="birthdate" required><br><br>
+        <div class="form-group">
+            <label for="reg-password">Password</label>
+            <input type="password" id="reg-password" name="password" required>
+        </div>
 
-        <label>Student Number (optional):</label><br>
-        <input type="text" name="student_number"><br><br>
+        <div class="form-group">
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+        </div>
 
-        <label>Student Type:</label><br>
-        <select name="student_type" required>
-            <option value="" disabled selected>Select type</option>
-            <option value="Current/Enrolled">Current/Enrolled</option>
-            <option value="Graduate/Alumnus">Graduate/Alumnus</option>
-            <option value="Transferee/Shiftee">Transferee/Shiftee</option>
-            <option value="Inactive/LOA">Inactive/LOA</option>
-        </select><br><br>
-
-        <label>Password:</label><br>
-        <input type="password" name="password" required><br><br>
-
-        <label>Confirm Password:</label><br>
-        <input type="password" name="confirm_password" required><br><br>
-
-        <button type="submit">Signup</button>
+        <button type="submit" class="btn-primary btn-block">Signup</button>
     </form>
-    <button onclick="showLogin()">Already have an account? Login</button>
+
+    <button type="button" class="btn-link" onclick="showLogin()">Already have an account? Login</button>
 </div>

@@ -8,16 +8,37 @@
         <a class="btn-primary" href="{{ url_for('auth.logout') }}">Log out</a>
     </div>
 
-    <div class="dashboard-wrapper">
-    <div class="dashboard-header">
-        <div>
-            <h1>Request a Document</h1>
-            <p class="subtext">Choose a document type below to start a new request.</p>
-        </div>
-
+    <div class="tab-nav">
+        <button class="tab-link active" data-tab="profile">Profile</button>
+        <button class="tab-link" data-tab="new-request">New Request</button>
+        <button class="tab-link" data-tab="requests">Requests</button>
     </div>
-    {% include "modals/student_request_form.html" %}
-    {% include "modals/student_dashboard.html" %}
+
+    <div id="profile" class="tab-content active">
+        <section class="dashboard">
+            <h2>My Profile</h2>
+            {% include "modals/student_profile.html" %}
+        </section>
+    </div>
+
+    <div id="new-request" class="tab-content">
+        {% include "modals/student_request_form.html" %}
+    </div>
+
+    <div id="requests" class="tab-content">
+        {% include "modals/student_dashboard.html" %}
     </div>
 </div>
+
+<script>
+document.querySelectorAll('.tab-link').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-link').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+});
+</script>
 {% endblock %}

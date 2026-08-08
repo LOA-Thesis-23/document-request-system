@@ -1,0 +1,50 @@
+<section class="dashboard">
+ 
+
+    <form method="POST" action="{{ url_for('student.update_profile') }}" id="profile-form">
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="full_name">Full Name</label>
+                <input type="text" id="full_name" name="full_name" value="{{ current_user.full_name }}" disabled required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="{{ current_user.email }}" disabled required>
+            </div>
+            <div class="form-group">
+                <label>Student Number</label>
+                <input type="text" value="{{ current_user.student_number or 'N/A' }}" disabled>
+            </div>
+            <div class="form-group">
+                <label>Student Type</label>
+                <input type="text" value="{{ current_user.student_type or 'N/A' }}" disabled>
+            </div>
+        </div>
+        <button type="button" class="btn-primary" id="edit-profile-btn">Edit Profile</button>
+        <div id="profile-form-actions" style="display: none; margin-top: 1rem;">
+            <button type="submit" class="btn-primary">Save Changes</button>
+            <button type="button" class="btn-secondary" id="cancel-edit-btn">Cancel</button>
+        </div>
+    </form>
+</section>
+
+<script>
+(function() {
+    const editBtn = document.getElementById('edit-profile-btn');
+    const cancelBtn = document.getElementById('cancel-edit-btn');
+    const actions = document.getElementById('profile-form-actions');
+    const editableFields = ['full_name', 'email'];
+
+    editBtn.addEventListener('click', () => {
+        editableFields.forEach(id => document.getElementById(id).disabled = false);
+        actions.style.display = 'block';
+        editBtn.style.display = 'none';
+    });
+
+    cancelBtn.addEventListener('click', () => {
+        editableFields.forEach(id => document.getElementById(id).disabled = true);
+        actions.style.display = 'none';
+        editBtn.style.display = 'inline-block';
+    });
+})();
+</script>

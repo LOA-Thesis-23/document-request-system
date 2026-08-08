@@ -1,13 +1,19 @@
-<div id="login-view">
+<div id="login-view" class="auth-view">
     <h1>Login</h1>
+
     <form method="POST" action="{{ url_for('auth.login') }}">
-        <label>Email:</label><br>
-        <input type="email" name="email" required><br><br>
+        <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" name="email" required>
+        </div>
 
-        <label>Password:</label><br>
-        <input type="password" name="password" required><br><br>
+        <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" name="password" required>
+        </div>
 
-        <button type="submit">Login</button>
+        <button type="submit" class="btn-primary btn-block">Login</button>
     </form>
-    <button onclick="showSignup()">Need an account? Sign Up</button>
+
+    <button type="button" class="btn-link" onclick="showSignup()">Need an account? Sign Up</button>
 </div>

@@ -15,19 +15,22 @@
     width:40%;
     height: auto;
 }
-
+/*brand landing--------------------------------------*/
 .brand-landing {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
+    margin-left: 8%;
+    max-width: 600px;
 }
 
 .eyebrow {
-    font-size: 0.85rem;
+    font-size: 1.15rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     opacity: 0.8;
+    color:#0066cc;
 }
 
 .brand-landing h1 {
@@ -35,28 +38,18 @@
     font-weight: 700;
     margin: 0;
     line-height: 1.2;
+    white-space: nowrap;
 }
 
 .brand-landing p {
-    font-size: 1.5zrem;
+    font-size: 1.5rem;
     line-height: 1.6;
     opacity: 0.9;
-    max-width: 420px;
-}
-
-header {
-    background-color: #ffffff;
-    padding: 0.5rem;
-}
-
-footer {
-    background-color: #004285;
-    color: #ffffff;
-    padding: 1rem;
-}
+    max-width: 430px;
+    text-align: justify;
 
 .branding-panel {
-    max-width: 500px;
+    max-width: 700px;
     padding: 2rem;
     position:relative;
 }
@@ -68,9 +61,22 @@ footer {
     
 }
 
+    
+}
 
+/*brand landing--------------------------------------*/
+
+.footer-base {
+    background-color: #004285;
+    color: #ffffff;
+    padding: 1rem;
+}
+
+
+/* container for LOGIN, SINGUP-------------------*/
 .modal-container {
-    position: absolute;
+
+    position:absolute;
     right: 20%;
     top: 50%;
     transform: translateY(-50%);
@@ -82,12 +88,21 @@ footer {
     border-style: solid;
 }
 
+.modal-container img {
+    height: 4rem;
+    width: auto;
+    float: right;
+    margin-top: -0.5rem;
+    
+}
+/* container for LOGIN, SINGUP-------------------*/
+
 /* ===== Navbar ===== */
 .navbar {
     display: flex;
     align-items: center;
     padding: 1rem 2rem;
-    background-image: url("/static/images/banner.svg");
+    background-image: url("/static/images/banner2.svg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -313,7 +328,7 @@ footer {
 
 .auth-view h1 {
     margin: 0 0 1.5rem 0;
-    font-size: 1.5rem;
+    font-size: 2rem;
 
 }
 

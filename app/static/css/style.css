@@ -25,12 +25,20 @@
 }
 
 .eyebrow {
-    font-size: 1.7rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+
+}
+
+.eyebrow span{
+    font-size: 1.5rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     opacity: 0.8;
-    color:#0066cc;
+    color: #0066cc;
 }
 
 .brand-landing h1 {
@@ -352,4 +360,16 @@
 
 .btn-link:hover {
     color: #003166;
+}
+
+.rectangle {
+    width: 15%;
+    height: 5px;
+    background-color: #0066cc;
+}
+
+.rectangle2 {
+    width: 15%;
+    height: 5px;
+    background-color: #0066cc;
 }

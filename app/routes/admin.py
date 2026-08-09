@@ -10,4 +10,4 @@ admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 @login_required
 @admin_required
 def home():
-    return render_template('modals/adminside.html')
+    return render_template('modals/adminside.html', role=current_user.role) 

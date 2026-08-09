@@ -2,15 +2,16 @@
 {% block content %}
 <div class="landing-wrapper">
 
-<div class="branding-panel">
-    <div class="brand-landing">
-        <span class="eyebrow">Welcome to Lyceum of Alabang</span>
-        <h1>Document Request System</h1>
-        <p>Request your academic documents online — fast, simple, and secure. Designed to make every request convenient, efficient, and hassle-free.</p>
+    <div class="branding-panel">
+        <div class="brand-landing">
+            <span class="eyebrow">Welcome to Lyceum of Alabang</span>
+            <h1>Document Request System</h1>
+            <p>Request your academic documents online — fast, simple, and secure. Designed to make every request convenient, efficient, and hassle-free.</p>
+        </div>
     </div>
-</div>
 
     <div class="modal-container">
+        <img src="{{ url_for('static', filename='images/loalogo.png') }}" alt="Lyceum of Alabang" class="navbar-logo">
         {% include "auth/login.html" %}
         {% include "auth/register.html" %}
 

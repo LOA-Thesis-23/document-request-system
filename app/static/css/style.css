@@ -12,8 +12,8 @@
 }
 
 .navbar-logo {
-    height:auto;
-    width:10%;
+    width:40%;
+    height: auto;
 }
 
 .brand-landing {
@@ -87,9 +87,13 @@ footer {
     display: flex;
     align-items: center;
     padding: 1rem 2rem;
-    background-color: #004285;
+    background-image: url("/static/images/banner.svg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     color: #ffffff;
+    
 }
 
 .navbar2 {

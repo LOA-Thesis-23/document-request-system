@@ -54,7 +54,7 @@ def register():
             return redirect(url_for('auth.register'))
 
         flash('Registration successful! Please log in.')
-        return redirect(url_for('auth.login'))
+        return redirect(url_for('index'))
 
     return render_template('auth/register.html')
 

@@ -70,18 +70,18 @@ def login():
         if staff and bcrypt.check_password_hash(staff.password, password):
             login_user(staff)
             if staff.role == 'admin':
-                return redirect(url_for('admin.home'))  # redirect for admin
+                return redirect(url_for('admin.home'))
             return redirect(url_for('staff.home'))
 
         student = Student.query.filter_by(email=email).first()
 
         if student and bcrypt.check_password_hash(student.password, password):
             login_user(student)
-            return redirect(url_for('student.home'))  #  redirect for student
+            return redirect(url_for('student.home'))
         else:
             flash('Invalid email or password.')
 
-    return render_template('auth/login.html')
+    return render_template('modals/container.html')
 
 @auth_bp.route('/logout')
 @login_required

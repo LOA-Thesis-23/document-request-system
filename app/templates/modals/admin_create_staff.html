@@ -1,0 +1,33 @@
+<section class="dashboard">
+    <h2>Create Staff Account</h2>
+    <form method="POST" action="{{ url_for('admin.create_staff') }}">
+        <div class="form-grid">
+            <div class="form-group full-width">
+                <label for="full_name">Full Name</label>
+                <input type="text" id="full_name" name="full_name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select id="role" name="role" required>
+                    <option value="" disabled selected>Select role</option>
+                    <option value="registrar">Registrar Staff</option>
+                    <option value="cashier">Cashier</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Temporary Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-primary" style="margin-top: 1rem;">Create Account</button>
+    </form>
+</section>

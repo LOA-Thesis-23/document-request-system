@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Admin Side</h1>
-    <p>Welcome to the admin side!</p>
-
+<div class="dashboard-wrapper">
+    <div class="dashboard-header">
         <div>
-            <button><a href="{{ url_for('admin.logout') }}">Log out</a></button>
+            <h1>Welcome, {{ current_user.full_name }}</h1>
         </div>
+        <a class="btn-primary" href="{{ url_for('auth.logout') }}">Log out</a>
+    </div>
+
+    {% include "modals/admin_create_staff.html" %}
+</div>
 {% endblock %}

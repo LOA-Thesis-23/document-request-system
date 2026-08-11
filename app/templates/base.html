@@ -19,11 +19,15 @@
     <nav class="navbar2">
         <h1></h1>
     </nav>
-{% block content %}
-{% endblock %}
+        <div class="page-wrapper {% block wrapper_class %}{% endblock %}">
+            {% block content %}
+            {% endblock %}
+        </div>
     <footer class="footer-base">
         <p>&copy; 2026 Lyceum of Alabang. All rights reserved..</p>
     </footer>
 
 </body>
 </html>
+
+

@@ -1,5 +1,13 @@
-{% if role == 'registrar' %}
-    <h1>Registrar Dashboard</h1>
-{% elif role == 'cashier' %}
-    <h1>Cashier Dashboard</h1>
-{% endif %}
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<a class="btn-primary" href="{{ url_for('auth.logout') }}">Log out - TEMPORARY LOCATION</a>
+    {% if role == 'registrar' %}
+        {% include "/modals/registrarstaff.html" %}
+    {% elif role == 'cashier' %}
+        {% include "/modals/cashierstaff.html" %}
+    {% endif %}
+    
+{% endblock %}

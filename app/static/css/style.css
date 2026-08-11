@@ -373,3 +373,228 @@
     height: 5px;
     background-color: #0066cc;
 }
+
+/* ===== Registrar Dashboard Layout ===== */
+.registrar-container-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0;
+    align-items: stretch;
+    width: 100%;
+    max-width: none;
+    min-height: calc(120vh - 200px);
+    margin: 0;
+    padding: 1rem;
+    box-sizing: border-box;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    border: 1px solid #eef0f3;
+}
+
+.container-left {
+    display: flex;
+    flex-direction: column;
+    flex: 3;
+    min-width: 0;
+}
+
+
+.container-right {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 400px;
+    border-left: 1px solid #eef0f3;
+}
+/* Cards grow to fill available height */
+.dashboard-card {
+    background-color: #ffffff;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    border: 1px solid #eef0f3;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* Explicitly force row direction here — don't let .dashboard-card's column rule bleed in */
+.dashboard-card.form-flow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex: 1;
+}
+
+
+/* Explicitly force row direction here — don't let .dashboard-card's column rule bleed in */
+.dashboard-card.form-flow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex: 1;
+}
+
+.form-flow-table {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+/* Tables inside a card just grow via flex, no display override */
+.dashboard-card > table {
+    flex: 1;
+}
+.form-flow-table:not(:last-child) {
+    border-right: 1px solid #eef0f3;
+}
+
+/* Completed + Expired: stacked inside one card, no gap, divider line between */
+.container-right .dashboard-card .complete_tab {
+    border-bottom: 1px solid #eef0f3;
+}
+
+/* ===== Tables — no independent border/shadow, they belong to the card now ===== */
+.pending_reqtab,
+.form-flow-table,
+.complete_tab,
+.expired_tab {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: transparent;
+}
+
+/* Title bar */
+.pending_reqtab thead tr:first-child th,
+.form-flow-table thead tr:first-child th,
+.complete_tab thead tr:first-child th,
+.expired_tab thead tr:first-child th {
+    background-color: #004285;
+    padding: 0.65rem 1rem;
+}
+
+.pending_reqtab h2,
+.form-flow-table h2,
+.complete_tab h2,
+.expired_tab h2 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.01em;
+}
+
+/* Column header row */
+.pending_reqtab thead tr:nth-child(2) th,
+.form-flow-table thead tr:nth-child(2) th,
+.complete_tab thead tr:nth-child(2) th,
+.expired_tab thead tr:nth-child(2) th {
+    background-color: #fafbfc;
+    color: #8a93a3;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eef0f3;
+}
+
+/* Body cells */
+.pending_reqtab td,
+.form-flow-table td,
+.complete_tab td,
+.expired_tab td {
+    padding: 0.6rem 1rem;
+    font-size: 0.82rem;
+    color: #1f2937;
+    border-bottom: 1px solid #f4f5f7;
+    vertical-align: middle;
+}
+
+.pending_reqtab tbody tr:last-child td,
+.form-flow-table tbody tr:last-child td,
+.complete_tab tbody tr:last-child td,
+.expired_tab tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.pending_reqtab tbody tr:hover:not(.empty-row),
+.form-flow-table tbody tr:hover:not(.empty-row),
+.complete_tab tbody tr:hover:not(.empty-row),
+.expired_tab tbody tr:hover:not(.empty-row) {
+    background-color: #f9fafb;
+}
+
+/* ===== Empty state rows ===== */
+.empty-row td {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    color: #9ca3af;
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+/* ===== Buttons ===== */
+.pending_reqtab button,
+.form-flow-table button,
+.complete_tab button,
+.expired_tab button {
+    background-color: #004285;
+    color: #ffffff;
+    border: none;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 0.35rem;
+    transition: background-color 0.15s ease;
+}
+
+.pending_reqtab button:hover,
+.form-flow-table button:hover,
+.complete_tab button:hover,
+.expired_tab button:hover {
+    background-color: #003166;
+}
+
+.form-flow-table button:nth-of-type(1) {
+    background-color: #ffffff;
+    color: #004285;
+    border: 1px solid #004285;
+}
+
+.form-flow-table button:nth-of-type(1):hover {
+    background-color: #eef4fb;
+}
+
+/* ===== Search + Filter toolbar ===== */
+.toolbar-cell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.4rem;
+}
+
+.complete_tab input[type="text"],
+.expired_tab input[type="text"] {
+    border: none;
+    padding: 0.35rem 0.6rem;
+    font-size: 0.78rem;
+    width: 100px;
+}
+
+.complete_tab thead tr:first-child button,
+.expired_tab thead tr:first-child button {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 0.35rem 0.7rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    margin-right: 0;
+}
+
+.complete_tab thead tr:first-child button:hover,
+.expired_tab thead tr:first-child button:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+

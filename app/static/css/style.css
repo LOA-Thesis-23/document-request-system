@@ -484,6 +484,8 @@
 /* Title bar */
 .pending_reqtab thead tr:first-child th,
 .form-flow-table thead tr:first-child th,
+.pending_cashiertab thead tr:first-child th,
+.Approved_cashiertab thead tr:first-child th,
 .complete_tab thead tr:first-child th,
 .expired_tab thead tr:first-child th {
     background-color: #004285;
@@ -650,6 +652,7 @@
     font-size: 0.75rem;
     font-weight: 600;
     cursor: pointer;
+    
 }
 
 .btn-outline:hover {

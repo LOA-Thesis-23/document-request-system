@@ -2,12 +2,13 @@
 
 
 {% block content %}
-
-<a class="btn-primary" href="{{ url_for('auth.logout') }}">Log out - TEMPORARY LOCATION</a>
-    {% if role == 'registrar' %}
-        {% include "/modals/registrarstaff.html" %}
-    {% elif role == 'cashier' %}
-        {% include "/modals/cashierstaff.html" %}
-    {% endif %}
+<div class="dashboard-wrapper-staff">
     
+    <a class="btn-primary-staff" href="{{ url_for('auth.logout') }}">Log out - TEMPORARY LOCATION</a>
+        {% if role == 'registrar' %}
+            {% include "/modals/registrarstaff.html" %}
+        {% elif role == 'cashier' %}
+            {% include "/modals/cashierstaff.html" %}
+        {% endif %}
+</div>
 {% endblock %}

@@ -66,7 +66,6 @@
 .branding-panel img {
     width: 20rem;
     margin-bottom: 1rem;
-    
 }
 
     
@@ -101,6 +100,7 @@
     width: auto;
     float: right;
     margin-top: -0.5rem;
+    
     
 }
 /* container for LOGIN, SINGUP-------------------*/
@@ -188,6 +188,25 @@
 
 .btn-primary:hover {
     background-color: #003166;
+}
+
+.btn-primary-staff {
+    display: inline-block;
+    background-color: #fffd83;
+    color: #003166;
+    text-decoration: none;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    width:fit-content;
+}
+
+.btn-primary-staff:hover {
+    background-color: #fffb00;
 }
 
 
@@ -596,5 +615,16 @@
 .complete_tab thead tr:first-child button:hover,
 .expired_tab thead tr:first-child button:hover {
     background-color: rgba(255, 255, 255, 0.25);
+}
+
+.dashboard-wrapper-staff {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-height: 100vh;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f5f7fa;
 }
 

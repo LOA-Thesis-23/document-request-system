@@ -11,3 +11,5 @@ staff_bp = Blueprint('staff', __name__, url_prefix='/staff')
 @staff_required
 def home():
     return render_template('modals/staffside.html', role=current_user.role)
+
+

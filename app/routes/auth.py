@@ -1,5 +1,6 @@
+from datetime import datetime, timezone
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from app import db, bcrypt
 from app.models import Student, Staff
 
@@ -28,7 +29,7 @@ def register():
             return redirect(url_for('auth.login'))
         
         if not student_number:
-            student_number = None  # Set to None if not provided
+            student_number = None
 
         if student_type and student_type not in VALID_STUDENT_TYPES:
             flash('Invalid student type. Please select a valid option.')
@@ -66,9 +67,17 @@ def login():
         password = request.form.get('password')
 
         staff = Staff.query.filter_by(email=email).first()
-        
+
+        if staff and staff.is_disabled:
+            flash('This account has been disabled. Contact an administrator.')
+            return render_template('modals/container.html')
+
         if staff and bcrypt.check_password_hash(staff.password, password):
             login_user(staff)
+            staff.is_online = True
+            staff.last_login = datetime.now(timezone.utc)
+            db.session.commit()
+
             if staff.role == 'admin':
                 return redirect(url_for('admin.home'))
             return redirect(url_for('staff.home'))
@@ -83,9 +92,13 @@ def login():
 
     return render_template('modals/container.html')
 
+
 @auth_bp.route('/logout')
 @login_required
 def logout():
+    if isinstance(current_user, Staff):
+        current_user.is_online = False
+        db.session.commit()
     logout_user()
     flash('You have been logged out.')
     return redirect(url_for('index'))

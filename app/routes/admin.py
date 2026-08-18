@@ -9,12 +9,6 @@ admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 VALID_STAFF_ROLES = ['registrar', 'cashier', 'admin']
 
 
-@admin_bp.route('/home')
-@login_required
-@admin_required
-def home():
-    return render_template('modals/adminside.html', role=current_user.role)
-
 
 @admin_bp.route('/staff/create', methods=['POST'])
 @login_required
@@ -43,4 +37,47 @@ def create_staff():
     db.session.commit()
 
     flash(f'{role.capitalize()} account created for {email}.')
+    return redirect(url_for('admin.home'))
+
+
+@admin_bp.route('/home')
+@login_required
+@admin_required
+def home():
+    staff_members = Staff.query.order_by(Staff.role, Staff.full_name).all()
+    return render_template('modals/adminside.html', role=current_user.role, staff_members=staff_members)
+
+
+@admin_bp.route('/staff/<int:staff_id>/toggle-disabled', methods=['POST'])
+@login_required
+@admin_required
+def toggle_staff_disabled(staff_id):
+    staff = Staff.query.get_or_404(staff_id)
+
+    if staff.id == current_user.id:
+        flash("You can't disable your own account.")
+        return redirect(url_for('admin.home'))
+
+    staff.is_disabled = not staff.is_disabled
+    db.session.commit()
+
+    status = 'disabled' if staff.is_disabled else 're-enabled'
+    flash(f'{staff.full_name} has been {status}.')
+    return redirect(url_for('admin.home'))
+
+
+@admin_bp.route('/staff/<int:staff_id>/delete', methods=['POST'])
+@login_required
+@admin_required
+def delete_staff(staff_id):
+    staff = Staff.query.get_or_404(staff_id)
+
+    if staff.id == current_user.id:
+        flash("You can't delete your own account.")
+        return redirect(url_for('admin.home'))
+
+    db.session.delete(staff)
+    db.session.commit()
+
+    flash(f'{staff.full_name} has been deleted.')
     return redirect(url_for('admin.home'))

@@ -1,0 +1,48 @@
+<section class="dashboard-card">
+    <table class="staff-list-table">
+        <thead>
+            <tr><th colspan="5"><h2>Staff Accounts</h2></th></tr>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if staff_members %}
+                {% for staff in staff_members %}
+                <tr>
+                    <td>{{ staff.full_name }}</td>
+                    <td>{{ staff.email }}</td>
+                    <td>{{ staff.role|capitalize }}</td>
+                    <td>
+                        {% if staff.is_disabled %}
+                            <span class="status-pill status-disabled">Disabled</span>
+                        {% elif staff.is_online %}
+                            <span class="status-pill status-online">Online</span>
+                        {% else %}
+                            <span class="status-pill status-offline">Offline</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form method="POST" action="{{ url_for('admin.toggle_staff_disabled', staff_id=staff.id) }}" style="display:inline;">
+                            <button type="submit" class="btn-outline">
+                                {{ 'Enable' if staff.is_disabled else 'Disable' }}
+                            </button>
+                        </form>
+                        <form method="POST" action="{{ url_for('admin.delete_staff', staff_id=staff.id) }}" style="display:inline;" onsubmit="return confirm('Delete {{ staff.full_name }}? This cannot be undone.');">
+                            <button type="submit" class="btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr class="empty-row">
+                    <td colspan="5">No staff accounts yet.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</section>

@@ -36,9 +36,15 @@ class Staff(db.Model, UserMixin):
     password = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(50), nullable=False)
     date_created = db.Column(db.DateTime, default= lambda: datetime.now(timezone.utc))
+    
+    is_disabled = db.Column(db.Boolean, default=False, nullable=False)
+    is_online = db.Column(db.Boolean, default=False, nullable=False)
+    last_login = db.Column(db.DateTime, nullable=True)
 
     def get_id(self):
         return f'staff_{self.id}'
+    
+    
 
 class DocumentType(db.Model):
     __tablename__ = 'document_types'
@@ -87,3 +93,4 @@ class SystemSettings(db.Model):
     name = db.Column(db.String(100), unique=True, nullable=False)
     value = db.Column(db.Boolean, nullable=False)
     description = db.Column(db.Text, nullable=True)
+

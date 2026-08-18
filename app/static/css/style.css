@@ -628,3 +628,130 @@
     background-color: #f5f7fa;
 }
 
+
+.status-pill {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-online   { background: #d1fae5; color: #065f46; }
+.status-offline  { background: #e5e7eb; color: #4b5563; }
+.status-disabled { background: #fee2e2; color: #991b1b; }
+
+.btn-outline {
+    background: none;
+    border: 1px solid #004285;
+    color: #004285;
+    padding: 0.3rem 0.65rem;
+    border-radius: 5px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-outline:hover {
+    background-color: #eef4fb;
+}
+
+.btn-danger {
+    background-color: #dc2626;
+    color: #ffffff;
+    border: none;
+    padding: 0.3rem 0.65rem;
+    border-radius: 5px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 0.35rem;
+}
+
+.btn-danger:hover {
+    background-color: #b91c1c;
+}
+
+
+.staff-list-table td form {
+    display: inline-block;
+    margin: 0;
+}
+
+
+/* ===== Add .staff-list-table to all shared table rules ===== */
+.pending_reqtab,
+.form-flow-table,
+.complete_tab,
+.expired_tab,
+.staff-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: transparent;
+    box-sizing: border-box;
+}
+
+.pending_reqtab thead tr:first-child th,
+.form-flow-table thead tr:first-child th,
+.complete_tab thead tr:first-child th,
+.expired_tab thead tr:first-child th,
+.staff-list-table thead tr:first-child th {
+    background-color: #004285;
+    padding: 0.65rem 1rem;
+}
+
+.pending_reqtab h2,
+.form-flow-table h2,
+.complete_tab h2,
+.expired_tab h2,
+.staff-list-table h2 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.01em;
+}
+
+.pending_reqtab thead tr:nth-child(2) th,
+.form-flow-table thead tr:nth-child(2) th,
+.complete_tab thead tr:nth-child(2) th,
+.expired_tab thead tr:nth-child(2) th,
+.staff-list-table thead tr:nth-child(2) th {
+    background-color: #fafbfc;
+    color: #8a93a3;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eef0f3;
+}
+
+.pending_reqtab td,
+.form-flow-table td,
+.complete_tab td,
+.expired_tab td,
+.staff-list-table td {
+    padding: 0.6rem 1rem;
+    font-size: 0.82rem;
+    color: #1f2937;
+    border-bottom: 1px solid #f4f5f7;
+    vertical-align: middle;
+}
+
+.pending_reqtab tbody tr:last-child td,
+.form-flow-table tbody tr:last-child td,
+.complete_tab tbody tr:last-child td,
+.expired_tab tbody tr:last-child td,
+.staff-list-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.pending_reqtab tbody tr:hover:not(.empty-row),
+.form-flow-table tbody tr:hover:not(.empty-row),
+.complete_tab tbody tr:hover:not(.empty-row),
+.expired_tab tbody tr:hover:not(.empty-row),
+.staff-list-table tbody tr:hover:not(.empty-row) {
+    background-color: #f9fafb;
+}

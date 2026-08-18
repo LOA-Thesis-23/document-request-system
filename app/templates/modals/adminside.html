@@ -8,6 +8,24 @@
         <a class="btn-primary" href="{{ url_for('auth.logout') }}">Log out</a>
     </div>
 
-    {% include "modals/admin_create_staff.html" %}
+
+
+    <div class="tab-nav">
+        <button class="tab-link active" data-tab="new-staff">Create Admin</button>
+        <button class="tab-link" data-tab="staff-list">Staff List</button>
+    </div>
+
+    <div id="new-staff" class="tab-content active">
+        {% include "modals/admin_create_staff.html" %}
+    </div>
+
+    <div id="staff-list" class="tab-content">
+        {% include "modals/admin_list.html" %}
+    </div>
+
 </div>
+
+
+
+<script> {% include "modals/script/tablink.js" %} </script> /// THIS WORKS OKAY?? For some reason this works even though may REDLINE, wag na baguhin
 {% endblock %}

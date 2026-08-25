@@ -18,11 +18,25 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr class="empty-row">
-                        <td colspan="4">No pending requests at the moment.</td>
+            <tbody>
+                {% if pending_requests %}
+                    {% for req in pending_requests %}
+                    <tr>
+                        <td>{{ req.student.student_number or req.student.id }}</td>
+                        <td>{{ req.student.full_name }}</td>
+                        <td>{{ req.document_type.name }}</td>
+                        <td>—</td>
+                        <td>
+                            <button type="button">Accept</button>
+                        </td>
                     </tr>
-                </tbody>
+                    {% endfor %}
+                {% else %}
+                <tr class="empty-row">
+                    <td colspan="4">No pending requests at the moment.</td>
+                </tr>
+                {% endif %}
+            </tbody>
             </table>
         </div>
 

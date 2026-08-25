@@ -47,3 +47,42 @@ def update_profile():
 
     flash('Profile updated successfully.')
     return redirect(url_for('student.home'))
+
+@student_bp.route('/request/<int:request_id>/mark-paid', methods=['POST'])
+@login_required
+def mark_paid(request_id):
+    doc_request = DocumentRequest.query.get_or_404(request_id)
+
+    if doc_request.student_id != current_user.id:
+        flash("You don't have permission to update this request.")
+        return redirect(url_for('student.home'))
+
+    if doc_request.status != 'Submitted':
+        flash('This request can no longer be marked as paid.')
+        return redirect(url_for('student.home'))
+
+    doc_request.status = 'OR Review'
+    db.session.commit()
+
+    flash('Marked as paid. Your request is now with the Cashier for review.')
+    return redirect(url_for('student.home'))
+
+
+@student_bp.route('/request/<int:request_id>/cancel', methods=['POST'])
+@login_required
+def cancel_request(request_id):
+    doc_request = DocumentRequest.query.get_or_404(request_id)
+
+    if doc_request.student_id != current_user.id:
+        flash("You don't have permission to update this request.")
+        return redirect(url_for('student.home'))
+
+    if doc_request.status != 'Submitted':
+        flash('This request can no longer be cancelled.')
+        return redirect(url_for('student.home'))
+
+    doc_request.status = 'Cancelled'
+    db.session.commit()
+
+    flash('Your request has been cancelled.')
+    return redirect(url_for('student.home'))

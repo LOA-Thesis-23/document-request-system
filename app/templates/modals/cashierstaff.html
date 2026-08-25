@@ -1,53 +1,79 @@
 <section class="registrar-container-wrapper">
     <div class="dashboard-card">
-            <table class="pending_reqtab">
-                <thead>
-                    <tr><th colspan="4"><h2>Pending Request</h2>
-                        <th class="toolbar-cell">
-                            <input type="text" id="complete_search" name="complete_search" placeholder="Search">
-                            <button>Filter</button>
-                        </th>
+        <table class="pending_reqtab">
+            <thead>
+                <tr>
+                    <th colspan="4"><h2>Pending Request</h2></th>
+                    <th class="toolbar-cell">
+                        <input type="text" id="pending_search" name="pending_search" placeholder="Search">
+                        <button>Filter</button>
                     </th>
                 </tr>
-                    <tr>
-                        <th>ID Number</th>
-                        <th>Name</th>
-                        <th>Request Type</th>
-                        <th>Attached File</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="empty-row">
-                        <td colspan="4">No pending requests at the moment.</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <table class="pending_reqtab">
-                <thead>
-                    <tr><th colspan="4"><h2>Approved Request</h2>
-                        <th class="toolbar-cell">
-                            <input type="text" id="complete_search" name="complete_search" placeholder="Search">
-                            <button>Filter</button>
-                        </th>
-                    </th>
+                <tr>
+                    <th>ID Number</th>
+                    <th>Name</th>
+                    <th>Request Type</th>
+                    <th>Date Requested</th>
+                    <th>Action</th>
                 </tr>
+            </thead>
+            <tbody>
+                {% if pending_requests %}
+                    {% for req in pending_requests %}
                     <tr>
-                        <th>ID Number</th>
-                        <th>Name</th>
-                        <th>Request Type</th>
-                        <th>Attached File</th>
-                        <th>Action</th>
+                        <td>{{ req.student.student_number or req.student.id }}</td>
+                        <td>{{ req.student.full_name }}</td>
+                        <td>{{ req.document_type.name }}</td>
+                        <td>{{ req.date_requested.strftime('%b %d, %Y') }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('cashier.accept_request', request_id=req.id) }}" style="display:inline;">
+                                <button type="submit">Accept</button>
+                            </form>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr class="empty-row">
-                        <td colspan="4">No pending requests at the moment.</td>
-                    </tr>
-                </tbody>
-            </table>
-    </div>
+                    {% endfor %}
+                {% else %}
+                <tr class="empty-row">
+                    <td colspan="4">No pending requests at the moment.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
 
-        
+        <table class="pending_reqtab">
+            <thead>
+                <tr>
+                    <th colspan="4"><h2>Approved Request</h2></th>
+                    <th class="toolbar-cell">
+                        <input type="text" id="approved_search" name="approved_search" placeholder="Search">
+                        <button>Filter</button>
+                    </th>
+                </tr>
+                <tr>
+                    <th>ID Number</th>
+                    <th>Name</th>
+                    <th>Request Type</th>
+                    <th>Date Requested</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if approved_requests %}
+                    {% for req in approved_requests %}
+                    <tr>
+                        <td>{{ req.student.student_number or req.student.id }}</td>
+                        <td>{{ req.student.full_name }}</td>
+                        <td>{{ req.document_type.name }}</td>
+                        <td>{{ req.date_requested.strftime('%b %d, %Y') }}</td>
+                        <td>—</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                <tr class="empty-row">
+                    <td colspan="4">No approved requests yet.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
 </section>

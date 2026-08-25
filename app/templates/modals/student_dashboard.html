@@ -2,28 +2,41 @@
         <h2>My Requests</h2>
 
         {% if requests %}
-        <table class="requests-table">
-            <thead>
-                <tr>
-                    <th>Request Type</th>
-                    <th>Date Submitted</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for req in requests %}
-                <tr>
-                    <td>{{ req.document_type.name }}</td>
-                    <td>{{ req.date_requested.strftime('%b %d, %Y') }}</td>
-                    <td>
-                        <span class="status-badge status-{{ req.status|lower|replace(' ', '-') }}">
-                            {{ req.status }}
-                        </span>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<table class="requests-table">
+    <thead>
+        <tr>
+            <th>Request Type</th>
+            <th>Date Submitted</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for req in requests %}
+        <tr>
+            <td>{{ req.document_type.name }}</td>
+            <td>{{ req.date_requested.strftime('%b %d, %Y') }}</td>
+            <td>
+                <span class="status-badge status-{{ req.status|lower|replace(' ', '-') }}">
+                    {{ req.status }}
+                </span>
+            </td>
+            <td>
+                {% if req.status == 'Submitted' %}
+                <form method="POST" action="{{ url_for('student.mark_paid', request_id=req.id) }}" style="display:inline;">
+                    <button type="submit" class="btn-outline">I've Paid</button>
+                </form>
+                <form method="POST" action="{{ url_for('student.cancel_request', request_id=req.id) }}" style="display:inline;" onsubmit="return confirm('Cancel this request?');">
+                    <button type="submit" class="btn-danger">Cancel</button>
+                </form>
+                {% else %}
+                <button type="button" class="btn-outline" disabled>Cancel</button>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
         {% else %}
         <div class="empty-state">
             <p>You haven't submitted any requests yet.</p>

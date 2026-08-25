@@ -37,5 +37,7 @@ def create_app():
     app.register_blueprint(staff_bp)
     from app.routes.admin import admin_bp
     app.register_blueprint(admin_bp)
+    from app.routes.cashier import cashier_bp
+    app.register_blueprint(cashier_bp)
 
     return app

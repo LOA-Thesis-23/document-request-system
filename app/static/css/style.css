@@ -55,6 +55,7 @@
     opacity: 0.9;
     max-width: 540px;
     text-align: justify;
+}
 
 .branding-panel {
     max-width: 700px;
@@ -69,7 +70,7 @@
 }
 
     
-}
+
 
 /*brand landing--------------------------------------*/
 
@@ -434,6 +435,7 @@
     display: flex;
     flex-direction: column;
     flex: 1;
+    overflow-y: auto;
 }
 
 /* Explicitly force row direction here — don't let .dashboard-card's column rule bleed in */
@@ -460,7 +462,10 @@
 
 /* Tables inside a card just grow via flex, no display override */
 .dashboard-card > table {
-    flex: 1;
+    width: 100%;
+    height: auto;
+    table-layout: fixed; /* Prevents cell overflow and enforces column alignments */
+    margin-bottom: auto;
 }
 .form-flow-table:not(:last-child) {
     border-right: 1px solid #eef0f3;
@@ -757,4 +762,24 @@
 .expired_tab tbody tr:hover:not(.empty-row),
 .staff-list-table tbody tr:hover:not(.empty-row) {
     background-color: #f9fafb;
+}
+
+.status-cancelled { background: #f3f4f6; color: #6b7280; }
+
+/* Fix row heights and align content to the top */
+.pending_reqtab tbody tr,
+.form-flow-table tbody tr,
+.complete_tab tbody tr,
+.expired_tab tbody tr,
+.staff-list-table tbody tr {
+    height: 48px; /* Fixed row height */
+}
+
+.pending_reqtab td,
+.form-flow-table td,
+.complete_tab td,
+.expired_tab td,
+.staff-list-table td {
+    vertical-align: middle;
+    white-space: nowrap; /* Prevents long text from wrapping and expanding row height */
 }

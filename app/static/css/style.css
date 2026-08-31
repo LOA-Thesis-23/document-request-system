@@ -783,3 +783,26 @@
     vertical-align: middle;
     white-space: nowrap; /* Prevents long text from wrapping and expanding row height */
 }
+
+
+.dashboard-card table tbody {
+    display: block;
+    min-height: 440px;   /* height of ~4-5 empty rows, adjust to taste */
+    max-height: 440px;
+    overflow-y: auto;
+}
+
+.dashboard-card table thead,
+.dashboard-card table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.dashboard-card table tbody:has(.empty-row) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-expired { background: #fecaca; color: #7f1d1d; }

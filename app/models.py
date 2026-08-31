@@ -72,6 +72,8 @@ class DocumentRequest(db.Model):
     student = db.relationship('Student', backref=db.backref('document_requests', lazy=True))
     document_type = db.relationship('DocumentType', backref=db.backref('document_requests', lazy=True))
     staff = db.relationship('Staff', backref=db.backref('document_requests', lazy=True))
+    released_at = db.Column(db.DateTime, nullable=True)
+
 
 class StatusHistory(db.Model):
     __tablename__ = 'status_history'
@@ -85,6 +87,8 @@ class StatusHistory(db.Model):
     document_request = db.relationship('DocumentRequest', backref=db.backref('status_history', lazy=True))
     staff = db.relationship('Staff', backref=db.backref('status_changes', lazy=True))
     timestamp = db.Column(db.DateTime, default= lambda: datetime.now(timezone.utc))
+
+ 
 
 class SystemSettings(db.Model):
     __tablename__ = 'system_settings'

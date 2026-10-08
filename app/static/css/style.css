@@ -246,13 +246,22 @@
 }
 
 .status-submitted            { background: #e5e7eb; color: #374151; }
-.status-or-review            { background: #fde68a; color: #92400e; }
-.status-in-process           { background: #fef08a; color: #854d0e; }
-.status-waiting-for-approval { background: #ddd6fe; color: #5b21b6; }
-.status-on-hold               { background: #fecaca; color: #991b1b; }
-.status-encoding              { background: #bfdbfe; color: #1e40af; }
-.status-releasing             { background: #a5f3fc; color: #155e75; }
-.status-claimed               { background: #bbf7d0; color: #166534; }
+.status-payment-verification { background: #fde68a; color: #92400e; }
+.status-for-correction       { background: #fed7aa; color: #9a3412; }
+.status-request-verification { background: #fef08a; color: #854d0e; }
+.status-document-preparation { background: #bfdbfe; color: #1e40af; }
+.status-on-hold              { background: #ddd6fe; color: #5b21b6; }
+.status-ready-for-release    { background: #a5f3fc; color: #155e75; }
+.status-completed            { background: #bbf7d0; color: #166534; }
+.status-rejected             { background: #fecaca; color: #991b1b; }
+.status-cancelled            { background: #f3f4f6; color: #6b7280; }
+
+.correction-note {
+    margin-top: 0.35rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+    font-style: italic;
+}
 
 /* ===== Empty States ===== */
 .empty-state {
@@ -411,21 +420,14 @@
     border: 1px solid #eef0f3;
 }
 
+/* Vertical Stack Layout for Left Container */
 .container-left {
     display: flex;
     flex-direction: column;
-    flex: 3;
+    flex: 2.2; /* Proportional width ratio against right container */
     min-width: 0;
 }
 
-
-.container-right {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-width: 400px;
-    border-left: 1px solid #eef0f3;
-}
 /* Cards grow to fill available height */
 .dashboard-card {
     background-color: #ffffff;
@@ -441,34 +443,69 @@
 /* Explicitly force row direction here — don't let .dashboard-card's column rule bleed in */
 .dashboard-card.form-flow {
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    flex: 1;
-}
-
-
-/* Explicitly force row direction here — don't let .dashboard-card's column rule bleed in */
-.dashboard-card.form-flow {
-    display: flex;
-    flex-direction: row;
+    flex-direction: column; /* Changed from row to column */
     flex-wrap: nowrap;
     flex: 1;
 }
 
 .form-flow-table {
-    flex: 1 1 0;
-    min-width: 0;
+    width: 100%;
+    border-right: none !important; /* Remove horizontal divider lines */
+    border-bottom: 1px solid #eef0f3; /* Add vertical section dividers */
+}
+/* Tables inside a card just grow via flex, no display override */
+.dashboard-card table tbody {
+    display: block;
+    min-height: 120px;
+    max-height: 220px; /* Reduced max height per section so 4 stacked tables fit on screen */
+    overflow-y: auto;
+}
+.form-flow-table:last-child {
+    border-bottom: none;
 }
 
-/* Tables inside a card just grow via flex, no display override */
-.dashboard-card > table {
-    width: 100%;
-    height: auto;
-    table-layout: fixed; /* Prevents cell overflow and enforces column alignments */
-    margin-bottom: auto;
+/* ===== Equal-Height Balancing for Right Container ===== */
+
+.container-right {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 340px;
+    border-left: 1px solid #eef0f3;
 }
-.form-flow-table:not(:last-child) {
-    border-right: 1px solid #eef0f3;
+
+/* Ensure right card spans the full height of the wrapper */
+.container-right .dashboard-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Force both tables in container-right to split height evenly (50% each) */
+.container-right .complete_tab,
+.container-right .expired_tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* Prevents overflow expanding the card */
+}
+
+.container-right .complete_tab {
+    border-bottom: 2px solid #eef0f3; /* Clear visual split between the two */
+}
+
+/* Table header and row alignment for flex tables */
+.container-right table thead {
+    flex: 0 0 auto;
+}
+
+/* Table body grows to fill its assigned 50% section */
+.container-right table tbody {
+    flex: 1;
+    display: block;
+    min-height: 150px;
+    max-height: none; /* Allows flexible stretching based on left column height */
+    overflow-y: auto;
 }
 
 /* Completed + Expired: stacked inside one card, no gap, divider line between */

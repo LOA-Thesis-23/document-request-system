@@ -16,12 +16,15 @@
         <tr>
             <td>{{ req.document_type.name }}</td>
             <td>{{ req.date_requested.strftime('%b %d, %Y') }}</td>
-            <td>
-                <span class="status-badge status-{{ req.status|lower|replace(' ', '-') }}">
-                    {{ req.status }}
-                </span>
-            </td>
-            <td>
+  <td>
+    <span class="status-badge status-{{ req.status|lower|replace(' ', '-') }}">{{ req.status }}</span>
+    {% if req.status == 'For Correction' and req.correction_note %}
+        <div class="correction-note">{{ req.correction_note }}</div>
+    {% elif req.status == 'Rejected' and req.remarks %}
+        <div class="correction-note">{{ req.remarks }}</div>
+    {% endif %}
+</td>
+<td>
     {% if req.status == 'Submitted' %}
     <form method="POST" action="{{ url_for('student.mark_paid', request_id=req.id) }}" style="display:inline;">
         <button type="submit" class="btn-outline">I've Paid</button>
@@ -29,14 +32,17 @@
     <form method="POST" action="{{ url_for('student.cancel_request', request_id=req.id) }}" style="display:inline;" onsubmit="return confirm('Cancel this request?');">
         <button type="submit" class="btn-danger">Cancel</button>
     </form>
-    {% elif req.status == 'Releasing' %}
-    <!-- QR generation/email not built yet — placeholder only. -->
+    {% elif req.status == 'For Correction' %}
+    <form method="POST" action="{{ url_for('student.resubmit_request', request_id=req.id) }}" style="display:inline;">
+        <button type="submit" class="btn-outline">Resubmit</button>
+    </form>
+    {% elif req.status == 'Ready for Release' %}
+    <!-- QR generation/email not built yet -->
     <button type="button" class="btn-outline" disabled title="Coming soon">Generate QR</button>
     {% else %}
     <button type="button" class="btn-outline" disabled>Generate QR</button>
     {% endif %}
 </td>
-
 
         </tr>
         {% endfor %}

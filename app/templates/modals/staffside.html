@@ -4,7 +4,7 @@
 {% block content %}
 <div class="dashboard-wrapper-staff">
     
-    <a class="btn-primary-staff" href="{{ url_for('auth.logout') }}">LOG OUT</a>
+    <a class="btn-primary-staff" href="{{ url_for('auth.logout') }}">LOG OUT USER</a>
         {% if role == 'registrar' %}
             {% include "/modals/registrarstaff.html" %}
         {% elif role == 'cashier' %}

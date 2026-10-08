@@ -1,209 +1,252 @@
 <section class="registrar-container-wrapper">
+    <!-- Left Column: Vertical Pipeline Stack -->
     <div class="container-left">
-        <div class="dashboard-card">
-            <table class="pending_reqtab">
+        <div class="dashboard-card form-flow">
+
+            <!-- 1. Request Verification -->
+            <table class="form-flow-table">
                 <thead>
-                    <tr><th colspan="4"><h2>Pending Request</h2>
-                        <th class="toolbar-cell">
-                            <input type="text" id="complete_search" name="complete_search" placeholder="Search">
-                            <button>Filter</button>
-                        </th>
-                    </th>
-                </tr>
                     <tr>
-                        <th>ID Number</th>
+                        <th colspan="5">
+                            <h2>Request Verification</h2>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>ID</th>
                         <th>Name</th>
-                        <th>Request Type</th>
-                        <th>Attached File</th>
+                        <th>Type</th>
+                        <th>File</th>
                         <th>Action</th>
                     </tr>
                 </thead>
-                    <tbody>
-                        {% if pending_requests %}
-                            {% for req in pending_requests %}
-                            <tr>
-                                <td>{{ req.student.student_number or req.student.id }}</td>
-                                <td>{{ req.student.full_name }}</td>
-                                <td>{{ req.document_type.name }}</td>
-                                <td>—</td>
-                                <td>
-                                    <form method="POST" action="{{ url_for('registrar.claim_request', request_id=req.id) }}" style="display:inline;">
-                                        <button type="submit">Accept</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        {% else %}
-                        <tr class="empty-row">
-                            <td colspan="4">No pending requests at the moment.</td>
+                <tbody>
+                    {% if verification_requests %}
+                        {% for req in verification_requests %}
+                        <tr>
+                            <td title="{{ req.student.student_number or req.student.id }}">{{ req.student.student_number or req.student.id }}</td>
+                            <td title="{{ req.student.full_name }}">{{ req.student.full_name }}</td>
+                            <td title="{{ req.document_type.name }}">{{ req.document_type.name }}</td>
+                            <td>—</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('staff.request_action', request_id=req.id, action='request_verified') }}" style="display:inline;">
+                                    <button type="submit">Accept</button>
+                                </form>
+                                <form method="POST" action="{{ url_for('staff.request_action', request_id=req.id, action='request_correction_required') }}" style="display:inline;"
+                                      onsubmit="var n = prompt('What information needs to be corrected?'); if (n === null || !n.trim()) return false; this.note.value = n;">
+                                    <input type="hidden" name="note">
+                                    <button type="submit">Correction</button>
+                                </form>
+                                <form method="POST" action="{{ url_for('staff.request_action', request_id=req.id, action='request_invalid') }}" style="display:inline;"
+                                      onsubmit="var n = prompt('Reason for rejecting this request?'); if (n === null || !n.trim()) return false; this.note.value = n;">
+                                    <input type="hidden" name="note">
+                                    <button type="submit">Reject</button>
+                                </form>
+                            </td>
                         </tr>
-                        {% endif %}
-                    </tbody>
-            </table>
-        </div>
-
-        <div class="dashboard-card form-flow">
-            <table class="form-flow-table">
-                <thead>
-                    <tr><th colspan="5"><h2>In Process</h2>
-                      
-                    </th>
-                </tr>
-                    <tr>
-                        <th>ID</th><th>Name</th><th>Type</th><th>File</th><th>Action</th>
-                    </tr>
-                </thead>
-<tbody>
-    {% if in_process_requests %}
-        {% for req in in_process_requests %}
-        <tr>
-            <td>{{ req.student.student_number or req.student.id }}</td>
-            <td>{{ req.student.full_name }}</td>
-            <td>{{ req.document_type.name }}</td>
-            <td>—</td>
-            <td>
-                <form method="POST" action="{{ url_for('registrar.hold_request', request_id=req.id) }}" style="display:inline;">
-                    <button type="submit">On Hold</button>
-                </form>
-                <form method="POST" action="{{ url_for('registrar.send_to_encoding', request_id=req.id) }}" style="display:inline;">
-                    <button type="submit">Accept</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    {% else %}
-    <tr class="empty-row">
-        <td colspan="5">No records at the moment.</td>
-    </tr>
-    {% endif %}
-</tbody>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="empty-row">
+                            <td colspan="5">No records at the moment.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
             </table>
 
+            <!-- 2. Document Preparation -->
             <table class="form-flow-table">
                 <thead>
-                    <tr><th colspan="5"><h2>Encoding</h2>
-                         
-                    </th>
-                </tr>
                     <tr>
-                        <th>ID</th><th>Name</th><th>Type</th><th>File</th><th>Action</th>
+                        <th colspan="5">
+                            <h2>Document Preparation</h2>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>File</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
-<tbody>
-    {% if encoding_requests %}
-        {% for req in encoding_requests %}
-        <tr>
-            <td>{{ req.student.student_number or req.student.id }}</td>
-            <td>{{ req.student.full_name }}</td>
-            <td>{{ req.document_type.name }}</td>
-            <td>—</td>
-            <td>
-                <form method="POST" action="{{ url_for('registrar.mark_encoding_done', request_id=req.id) }}" style="display:inline;">
-                    <button type="submit">Done</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    {% else %}
-    <tr class="empty-row">
-        <td colspan="5">No records at the moment.</td>
-    </tr>
-    {% endif %}
-</tbody>
+                <tbody>
+                    {% if preparation_requests %}
+                        {% for req in preparation_requests %}
+                        <tr>
+                            <td title="{{ req.student.student_number or req.student.id }}">{{ req.student.student_number or req.student.id }}</td>
+                            <td title="{{ req.student.full_name }}">{{ req.student.full_name }}</td>
+                            <td title="{{ req.document_type.name }}">{{ req.document_type.name }}</td>
+                            <td>—</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('staff.request_action', request_id=req.id, action='preparation_completed') }}" style="display:inline;">
+                                    <button type="submit">Done</button>
+                                </form>
+                                <form method="POST" action="{{ url_for('staff.request_action', request_id=req.id, action='exceptional_issue') }}" style="display:inline;">
+                                    <button type="submit">On Hold</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="empty-row">
+                            <td colspan="5">No records at the moment.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
             </table>
 
+            <!-- 3. On Hold -->
             <table class="form-flow-table">
                 <thead>
-                    <tr><th colspan="5"><h2>Releasing</h2></th>
-                        
+                    <tr>
+                        <th colspan="5">
+                            <h2>On Hold</h2>
+                        </th>
                     </tr>
                     <tr>
-                        <th>ID</th><th>Name</th><th>Type</th><th>File</th><th>Action</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>File</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
-<tbody>
-    {% if releasing_requests %}
-        {% for req in releasing_requests %}
-        <tr>
-            <td>{{ req.student.student_number or req.student.id }}</td>
-            <td>{{ req.student.full_name }}</td>
-            <td>{{ req.document_type.name }}</td>
-            <td>—</td>
-            <td>Awaiting pickup</td>
-        </tr>
-        {% endfor %}
-    {% else %}
-    <tr class="empty-row">
-        <td colspan="5">No records at the moment.</td>
-    </tr>
-    {% endif %}
-</tbody>
+                <tbody>
+                    {% if on_hold_requests %}
+                        {% for req in on_hold_requests %}
+                        <tr>
+                            <td title="{{ req.student.student_number or req.student.id }}">{{ req.student.student_number or req.student.id }}</td>
+                            <td title="{{ req.student.full_name }}">{{ req.student.full_name }}</td>
+                            <td title="{{ req.document_type.name }}">{{ req.document_type.name or '—' }}</td>
+                            <td>—</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('staff.request_action', request_id=req.id, action='hold_resolved') }}" style="display:inline;">
+                                    <button type="submit">Resolve</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="empty-row">
+                            <td colspan="5">Nothing on hold.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
             </table>
+
+            <!-- 4. Ready for Release -->
+            <table class="form-flow-table">
+                <thead>
+                    <tr>
+                        <th colspan="5">
+                            <h2>Ready for Release</h2>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>File</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if release_requests %}
+                        {% for req in release_requests %}
+                        <tr>
+                            <td title="{{ req.student.student_number or req.student.id }}">{{ req.student.student_number or req.student.id }}</td>
+                            <td title="{{ req.student.full_name }}">{{ req.student.full_name }}</td>
+                            <td title="{{ req.document_type.name }}">{{ req.document_type.name }}</td>
+                            <td>—</td>
+                            <td><span class="status-pill status-online">Awaiting pickup</span></td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="empty-row">
+                            <td colspan="5">No records at the moment.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
         </div>
     </div>
 
+    <!-- Right Column: Logs & Archive Stack -->
     <div class="container-right">
         <div class="dashboard-card">
+
+            <!-- 1. Completed -->
             <table class="complete_tab">
                 <thead>
                     <tr>
-                        <th colspan="2"><h2>Completed</h2></th>
+                        <th colspan="2">
+                            <h2>Completed</h2>
+                        </th>
                         <th class="toolbar-cell">
-                            <input type="text" id="complete_search" name="complete_search" placeholder="Search">
-                            <button>Filter</button>
+                            <input type="text" id="complete_search" placeholder="Search">
+                            <button type="button">Filter</button>
                         </th>
                     </tr>
                     <tr>
-                        <th>ID Number</th><th>Name</th><th>Action</th>
+                        <th>ID Number</th>
+                        <th>Name</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
-<tbody>
-    {% if completed_requests %}
-        {% for req in completed_requests %}
-        <tr>
-            <td>{{ req.student.student_number or req.student.id }}</td>
-            <td>{{ req.student.full_name }}</td>
-            <td><button type="button">View Transaction</button></td>
-        </tr>
-        {% endfor %}
-    {% else %}
-    <tr class="empty-row">
-        <td colspan="3">No completed requests yet.</td>
-    </tr>
-    {% endif %}
-</tbody>
+                <tbody>
+                    {% if completed_requests %}
+                        {% for req in completed_requests %}
+                        <tr>
+                            <td title="{{ req.student.student_number or req.student.id }}">{{ req.student.student_number or req.student.id }}</td>
+                            <td title="{{ req.student.full_name }}">{{ req.student.full_name }}</td>
+                            <td><button type="button" class="btn-outline">View Transaction</button></td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="empty-row">
+                            <td colspan="3">No completed requests yet.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
             </table>
 
+            <!-- 2. Rejected -->
             <table class="expired_tab">
                 <thead>
                     <tr>
-                        <th colspan="2"><h2>Expired</h2></th>
+                        <th colspan="2">
+                            <h2>Rejected</h2>
+                        </th>
                         <th class="toolbar-cell">
-                            <input type="text" id="expired_search" name="expired_search" placeholder="Search">
-                            <button>Filter</button>
+                            <input type="text" id="rejected_search" placeholder="Search">
+                            <button type="button">Filter</button>
                         </th>
                     </tr>
                     <tr>
-                        <th>ID Number</th><th>Name</th><th>Action</th>
+                        <th>ID Number</th>
+                        <th>Name</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
-<tbody>
-    {% if expired_requests %}
-        {% for req in expired_requests %}
-        <tr>
-            <td>{{ req.student.student_number or req.student.id }}</td>
-            <td>{{ req.student.full_name }}</td>
-            <td><button type="button">View Transaction</button></td>
-        </tr>
-        {% endfor %}
-    {% else %}
-    <tr class="empty-row">
-        <td colspan="3">No expired requests.</td>
-    </tr>
-    {% endif %}
-</tbody>
+                <tbody>
+                    {% if rejected_requests %}
+                        {% for req in rejected_requests %}
+                        <tr>
+                            <td title="{{ req.student.student_number or req.student.id }}">{{ req.student.student_number or req.student.id }}</td>
+                            <td title="{{ req.student.full_name }}">{{ req.student.full_name }}</td>
+                            <td>
+                                <button type="button" class="btn-outline" title="{{ req.remarks or '' }}">View Transaction</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="empty-row">
+                            <td colspan="3">No rejected requests.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
             </table>
+
         </div>
     </div>
-
 </section>

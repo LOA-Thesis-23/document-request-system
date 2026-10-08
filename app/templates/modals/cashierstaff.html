@@ -3,19 +3,13 @@
         <table class="pending_reqtab">
             <thead>
                 <tr>
-                    <th colspan="4"><h2>Pending Request</h2></th>
+                    <th colspan="4"><h2>Payment Verification</h2></th>
                     <th class="toolbar-cell">
-                        <input type="text" id="pending_search" name="pending_search" placeholder="Search">
+                        <input type="text" id="pending_search" placeholder="Search">
                         <button>Filter</button>
                     </th>
                 </tr>
-                <tr>
-                    <th>ID Number</th>
-                    <th>Name</th>
-                    <th>Request Type</th>
-                    <th>Date Requested</th>
-                    <th>Action</th>
-                </tr>
+                <tr><th>ID Number</th><th>Name</th><th>Request Type</th><th>Date Requested</th><th>Action</th></tr>
             </thead>
             <tbody>
                 {% if pending_requests %}
@@ -26,16 +20,19 @@
                         <td>{{ req.document_type.name }}</td>
                         <td>{{ req.date_requested.strftime('%b %d, %Y') }}</td>
                         <td>
-                            <form method="POST" action="{{ url_for('cashier.accept_request', request_id=req.id) }}" style="display:inline;">
+                            <form method="POST" action="{{ url_for('staff.request_action', request_id=req.id, action='payment_verified') }}" style="display:inline;">
                                 <button type="submit">Accept</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('staff.request_action', request_id=req.id, action='payment_correction_required') }}" style="display:inline;"
+                                  onsubmit="var n = prompt('What needs to be corrected in the payment?'); if (n === null || !n.trim()) return false; this.note.value = n;">
+                                <input type="hidden" name="note">
+                                <button type="submit">For Correction</button>
                             </form>
                         </td>
                     </tr>
                     {% endfor %}
                 {% else %}
-                <tr class="empty-row">
-                    <td colspan="4">No pending requests at the moment.</td>
-                </tr>
+                <tr class="empty-row"><td colspan="5">No pending requests at the moment.</td></tr>
                 {% endif %}
             </tbody>
         </table>
@@ -45,17 +42,11 @@
                 <tr>
                     <th colspan="4"><h2>Approved Request</h2></th>
                     <th class="toolbar-cell">
-                        <input type="text" id="approved_search" name="approved_search" placeholder="Search">
+                        <input type="text" id="approved_search" placeholder="Search">
                         <button>Filter</button>
                     </th>
                 </tr>
-                <tr>
-                    <th>ID Number</th>
-                    <th>Name</th>
-                    <th>Request Type</th>
-                    <th>Date Requested</th>
-                    <th>Action</th>
-                </tr>
+                <tr><th>ID Number</th><th>Name</th><th>Request Type</th><th>Date Requested</th><th>Current Status</th></tr>
             </thead>
             <tbody>
                 {% if approved_requests %}
@@ -65,13 +56,11 @@
                         <td>{{ req.student.full_name }}</td>
                         <td>{{ req.document_type.name }}</td>
                         <td>{{ req.date_requested.strftime('%b %d, %Y') }}</td>
-                        <td>—</td>
+                        <td><span class="status-badge status-{{ req.status|lower|replace(' ', '-') }}">{{ req.status }}</span></td>
                     </tr>
                     {% endfor %}
                 {% else %}
-                <tr class="empty-row">
-                    <td colspan="4">No approved requests yet.</td>
-                </tr>
+                <tr class="empty-row"><td colspan="5">No approved requests yet.</td></tr>
                 {% endif %}
             </tbody>
         </table>

@@ -73,6 +73,9 @@ class DocumentRequest(db.Model):
     document_type = db.relationship('DocumentType', backref=db.backref('document_requests', lazy=True))
     staff = db.relationship('Staff', backref=db.backref('document_requests', lazy=True))
     released_at = db.Column(db.DateTime, nullable=True)
+    
+    correction_from = db.Column(db.String(20), nullable=True)   # 'Payment Verification' or 'Request Verification'
+    correction_note = db.Column(db.Text, nullable=True)
 
 
 class StatusHistory(db.Model):
@@ -83,11 +86,15 @@ class StatusHistory(db.Model):
     from_status = db.Column(db.String(20), nullable=False)
     to_status = db.Column(db.String(20), nullable=False)
     action = db.Column(db.String(50), nullable=False)
-    staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'), nullable=False)
+    accepted = db.Column(db.Boolean, default=True, nullable=False)   # False = rejected attempt
+    staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'), nullable=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=True)
+    note = db.Column(db.Text, nullable=True)
+    timestamp = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
     document_request = db.relationship('DocumentRequest', backref=db.backref('status_history', lazy=True))
     staff = db.relationship('Staff', backref=db.backref('status_changes', lazy=True))
-    timestamp = db.Column(db.DateTime, default= lambda: datetime.now(timezone.utc))
-
+    student = db.relationship('Student', backref=db.backref('status_changes', lazy=True))
  
 
 class SystemSettings(db.Model):

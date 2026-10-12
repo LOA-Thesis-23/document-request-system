@@ -1,5 +1,4 @@
 
-from pathlib import Path
 
 from flask import (
     Blueprint,
@@ -9,10 +8,11 @@ from flask import (
     request,
     abort,
     current_app,
-    send_from_directory,
+    Response,
 )
 from flask_login import login_required, current_user
 
+from app.services.receipt_storage import get_receipt, ReceiptStorageError
 from app import db
 from app.decorators import staff_required
 from app.models import DocumentRequest
@@ -35,21 +35,11 @@ def cashier_only():
 
 
 def receipt_path(doc_request):
-    filename = doc_request.or_photo_path
-
-    if not filename:
+    # New requests store the private bucket object path in or_photo_path.
+    path = doc_request.or_photo_path
+    if not path or path.startswith('/') or '..' in path.split('/'):
         return None
-
-    if Path(filename).name != filename:
-        return None
-
-    folder = Path(current_app.instance_path) / "receipts"
-    path = folder / filename
-
-    if not path.is_file():
-        return None
-
-    return folder, filename
+    return path
 
 
 @cashier_bp.route(
@@ -66,18 +56,29 @@ def view_receipt(request_id):
         request_id
     )
 
-    receipt = receipt_path(doc_request)
-
-    if receipt is None:
+    path = receipt_path(doc_request)
+    if path is None:
         abort(404)
 
-    folder, filename = receipt
+    try:
+        content = get_receipt(path)
+    except ReceiptStorageError:
+        current_app.logger.exception('Receipt retrieval failed for request %s', request_id)
+        abort(502)
+    if content is None:
+        abort(404)
 
-    return send_from_directory(
-        str(folder),
-        filename,
-        as_attachment=False
-    )
+    extension = path.rsplit('.', 1)[-1].lower()
+    mime = {
+        'jpg': 'image/jpeg', 'jpeg': 'image/jpeg',
+        'png': 'image/png', 'pdf': 'application/pdf',
+    }.get(extension, 'application/octet-stream')
+    return Response(content, mimetype=mime, headers={
+        'Content-Disposition': 'inline',
+        'Cache-Control': 'private, no-store',
+        'X-Content-Type-Options': 'nosniff',
+    })
+
 
 
 @cashier_bp.route(
@@ -100,10 +101,17 @@ def accept_request(request_id):
         )
         return redirect(url_for("staff.home"))
 
-    if receipt_path(doc_request) is None:
-        flash(
-            "Cannot approve: no valid receipt file is available."
-        )
+    path = receipt_path(doc_request)
+    if path is None:
+        flash("Cannot approve: no receipt is attached.")
+        return redirect(url_for("staff.home"))
+    try:
+        if get_receipt(path) is None:
+            flash("Cannot approve: receipt is missing from storage.")
+            return redirect(url_for("staff.home"))
+    except ReceiptStorageError:
+        current_app.logger.exception('Receipt check failed for request %s', request_id)
+        flash("Cannot verify receipt storage right now. Please retry.")
         return redirect(url_for("staff.home"))
 
     or_number = request.form.get(

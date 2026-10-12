@@ -37,7 +37,7 @@ def home():
         context['completed_requests'] = by_status('Completed', DocumentRequest.date_completed.desc())
         context['rejected_requests'] = by_status('Rejected')
 
-    return render_template('modals/staffside.html', **context)
+    return render_template('modals/staff/staffside.html', **context)
 
 
 @staff_bp.route('/request/<int:request_id>/<action>', methods=['POST'])
@@ -56,5 +56,5 @@ def request_action(request_id, action):
         return redirect(url_for('staff.home'))
 
     ok, message = apply_transition(doc_request, action, staff=current_user, note=note)
-    flash(message)
+    flash(message, 'success' if ok else 'error')
     return redirect(url_for('staff.home'))

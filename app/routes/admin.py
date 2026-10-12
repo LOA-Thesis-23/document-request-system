@@ -20,7 +20,7 @@ def create_staff():
     role = request.form.get('role')
 
     if not full_name or not email or not password or not role:
-        flash('Please fill in all fields.')
+        flash('Please fill in all required fields.', 'auth_error')   
         return redirect(url_for('admin.home'))
 
     if role not in VALID_STAFF_ROLES:
@@ -45,7 +45,7 @@ def create_staff():
 @admin_required
 def home():
     staff_members = Staff.query.order_by(Staff.role, Staff.full_name).all()
-    return render_template('modals/adminside.html', role=current_user.role, staff_members=staff_members)
+    return render_template('modals/admin/adminside.html', staff_members=staff_members)
 
 
 @admin_bp.route('/staff/<int:staff_id>/toggle-disabled', methods=['POST'])

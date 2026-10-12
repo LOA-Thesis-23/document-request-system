@@ -25,14 +25,14 @@ def register():
         existing_student = Student.query.filter_by(email=email).first()
 
         if existing_student:
-            flash('Email already registered. Please log in.')
+            flash('Email already registered. Please log in.', 'auth_error')
             return redirect(url_for('auth.login'))
         
         if not student_number:
             student_number = None
 
         if student_type and student_type not in VALID_STUDENT_TYPES:
-            flash('Invalid student type. Please select a valid option.')
+            flash('Invalid student type. Please select a valid option.', 'auth_error')
             return redirect(url_for('auth.register'))
 
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -51,10 +51,10 @@ def register():
             db.session.commit()
         except Exception as e:
             db.session.rollback()
-            flash('An error occurred while registering. Please try again.')
+            flash('An error occurred while registering. Please try again.', 'auth_error') 
             return redirect(url_for('auth.register'))
 
-        flash('Registration successful! Please log in.')
+        flash('Registration successful! Please log in.', 'auth_success')
         return redirect(url_for('index'))
 
     return render_template('auth/register.html')
@@ -69,7 +69,7 @@ def login():
         staff = Staff.query.filter_by(email=email).first()
 
         if staff and staff.is_disabled:
-            flash('This account has been disabled. Contact an administrator.')
+            flash('This account has been disabled. Contact an administrator.', 'auth_error')
             return render_template('modals/container.html')
 
         if staff and bcrypt.check_password_hash(staff.password, password):
@@ -88,7 +88,7 @@ def login():
             login_user(student)
             return redirect(url_for('student.home'))
         else:
-            flash('Invalid email or password.')
+            flash('Invalid email or password.', 'auth_error')      
 
     return render_template('modals/container.html')
 
@@ -100,5 +100,5 @@ def logout():
         current_user.is_online = False
         db.session.commit()
     logout_user()
-    flash('You have been logged out.')
+    flash('You have been logged out.', 'auth_success')
     return redirect(url_for('index'))

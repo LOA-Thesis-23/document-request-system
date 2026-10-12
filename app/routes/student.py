@@ -17,7 +17,7 @@ def home():
     )
     document_types = DocumentType.query.order_by(DocumentType.name).all()
     return render_template(
-        'modals/studentside.html',
+        'modals/student/studentside.html',
         requests=requests,
         document_types=document_types
     )
@@ -62,7 +62,8 @@ def mark_paid(request_id):
         flash("You don't have permission to update this request.")
         return redirect(url_for('student.home'))
     ok, message = apply_transition(doc_request, 'mark_paid', student=current_user)
-    flash('Marked as paid. Your request is now with the Cashier.' if ok else message)
+    flash('Marked as paid. Your request is now with the Cashier.' if ok else message,
+      'success' if ok else 'error')
     return redirect(url_for('student.home'))
 
 

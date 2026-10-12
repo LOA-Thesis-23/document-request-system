@@ -1,3 +1,4 @@
+{% include "partials/_flash.html" %}
 {% extends "base.html" %}
 {% block content %}
 <div class="dashboard-wrapper">
@@ -17,16 +18,16 @@
     <div id="profile" class="tab-content active">
         <section class="dashboard">
             <h2>My Profile</h2>
-            {% include "modals/student_profile.html" %}
+            {% include "modals/student/student_profile.html" %}
         </section>
     </div>
 
     <div id="new-request" class="tab-content">
-        {% include "modals/student_request_form.html" %}
+        {% include "modals/student/student_request_form.html" %}
     </div>
 
     <div id="requests" class="tab-content">
-        {% include "modals/student_dashboard.html" %}
+        {% include "modals/student/student_dashboard.html" %}
     </div>
 </div>
 

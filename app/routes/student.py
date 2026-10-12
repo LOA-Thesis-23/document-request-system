@@ -1,3 +1,4 @@
+
 from pathlib import Path
 from uuid import uuid4
 
@@ -52,7 +53,11 @@ def _save_receipt(upload):
         raise ValueError('Please upload your payment receipt.')
 
     filename = secure_filename(upload.filename)
-    extension = filename.rsplit('.', 1)[-1].lower() if '.' in filename else ''
+    extension = (
+        filename.rsplit('.', 1)[-1].lower()
+        if '.' in filename
+        else ''
+    )
 
     if extension not in ALLOWED_RECEIPT_EXTENSIONS:
         raise ValueError('Only JPG, PNG, and PDF receipts are allowed.')
@@ -65,18 +70,22 @@ def _save_receipt(upload):
     if len(content) > MAX_RECEIPT_SIZE:
         raise ValueError('The receipt must not exceed 5 MB.')
 
-    # Check the actual file signature, not only its extension.
+    # Validate the actual file signature.
     valid = False
 
     if extension in {'jpg', 'jpeg'}:
         valid = content.startswith(b'\xff\xd8\xff')
+
     elif extension == 'png':
         valid = content.startswith(b'\x89PNG\r\n\x1a\n')
+
     elif extension == 'pdf':
         valid = content.startswith(b'%PDF-')
 
     if not valid:
-        raise ValueError('The file does not match its selected format.')
+        raise ValueError(
+            'The file does not match its selected format.'
+        )
 
     upload_folder = Path(current_app.instance_path) / 'receipts'
     upload_folder.mkdir(parents=True, exist_ok=True)
@@ -110,7 +119,7 @@ def home():
     )
 
     return render_template(
-        'modals/studentside.html',
+        'modals/student/studentside.html',
         requests=requests,
         document_types=document_types
     )
@@ -126,7 +135,7 @@ def submit_request(doc_type_id):
         flash('Only students can submit document requests.')
         return redirect(url_for('staff.home'))
 
-    doc_type = DocumentType.query.get_or_404(doc_type_id)
+    doc_type = db.get_or_404(DocumentType, doc_type_id)
 
     receipt = request.files.get('receipt')
     saved_path = None
@@ -159,7 +168,9 @@ def submit_request(doc_type_id):
         if saved_path is not None:
             saved_path.unlink(missing_ok=True)
 
-        current_app.logger.exception('Document request submission failed')
+        current_app.logger.exception(
+            'Document request submission failed'
+        )
         flash('Unable to submit your request.')
 
     return redirect(url_for('student.home'))
@@ -209,7 +220,13 @@ def mark_paid(request_id):
         flash('Document request not found or access denied.')
         return redirect(url_for('student.home'))
 
-    flash('Payment receipts are now submitted with new requests.')
+    # Payment receipts are already uploaded during
+    # the initial document request submission.
+    # The Cashier is responsible for payment verification.
+    flash(
+        'Payment receipts are now submitted with new requests.'
+    )
+
     return redirect(url_for('student.home'))
 
 
@@ -230,6 +247,7 @@ def cancel_request(request_id):
         return redirect(url_for('student.home'))
 
     flash('Request cancellation is not currently supported.')
+
     return redirect(url_for('student.home'))
 
 
@@ -254,4 +272,5 @@ def resubmit_request(request_id):
         return redirect(url_for('student.home'))
 
     flash('Correction submission is not yet connected.')
+
     return redirect(url_for('student.home'))

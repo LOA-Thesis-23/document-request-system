@@ -14,23 +14,21 @@
         </div>
     </div>
 
-    <div class="modal-container">
-        <img src="{{ url_for('static', filename='images/loalogo.png') }}" alt="Lyceum of Alabang" class="navbar-logo">
-        {% include "auth/login.html" %}
-        {% include "auth/register.html" %}
+ <div class="modal-container">
+    <img src="{{ url_for('static', filename='images/loalogo.png') }}" alt="Lyceum of Alabang" class="navbar-logo">
 
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
-    </div>
+    {% with messages = get_flashed_messages(with_categories=true, category_filter=["auth_error", "auth_success"]) %}
+        {% if messages %}
+            {% set category, message = messages[-1] %}
+            <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+        {% endif %}
+    {% endwith %}
+
+    {% include "auth/login.html" %}
+    {% include "auth/register.html" %}
+</div>
 
 </div>
 
-<script> {% include "modals/script/SignupLogin.js" %}</script>
+<script> {% include "modals/script/SignupLogin.js" %} </script>
 {% endblock %}

@@ -18,32 +18,47 @@ from app.algorithms.lifecycle import (
     REJECTED,
 )
 
+
 staff_bp = Blueprint('staff', __name__, url_prefix='/staff')
 
-# General staff actions. Verification, preparation, and release have
-# dedicated routes with the required server-side business checks.
+
+# General staff actions.
+# Verification, preparation, and release have dedicated routes.
 STAFF_ACTIONS = {
     'cashier': {'correction_required', 'request_rejected'},
     'registrar': {'correction_required', 'request_rejected'},
 }
+
 REASON_REQUIRED = {'correction_required', 'request_rejected'}
 
 
 def by_status(status, order=None):
     if order is None:
         order = DocumentRequest.date_requested
-    return DocumentRequest.query.filter_by(status=status).order_by(order).all()
+
+    return (
+        DocumentRequest.query
+        .filter_by(status=status)
+        .order_by(order)
+        .all()
+    )
 
 
 def preparation_by_internal_status(status):
     return (
         DocumentRequest.query
-        .join(PreparationQueue, PreparationQueue.document_request_id == DocumentRequest.id)
+        .join(
+            PreparationQueue,
+            PreparationQueue.document_request_id == DocumentRequest.id
+        )
         .filter(
             DocumentRequest.status == DOCUMENT_PREPARATION,
             PreparationQueue.status == status,
         )
-        .order_by(DocumentRequest.date_requested.asc(), DocumentRequest.id.asc())
+        .order_by(
+            DocumentRequest.date_requested.asc(),
+            DocumentRequest.id.asc()
+        )
         .all()
     )
 
@@ -55,7 +70,10 @@ def home():
     context = {'role': current_user.role}
 
     if current_user.role == 'cashier':
-        context['pending_requests'] = by_status(PAYMENT_VERIFICATION)
+        context['pending_requests'] = by_status(
+            PAYMENT_VERIFICATION
+        )
+
         verified_ids = (
             db.session.query(StatusHistory.document_request_id)
             .filter(
@@ -63,6 +81,7 @@ def home():
                 StatusHistory.accepted.is_(True),
             )
         )
+
         context['approved_requests'] = (
             DocumentRequest.query
             .filter(DocumentRequest.id.in_(verified_ids))
@@ -71,66 +90,110 @@ def home():
         )
 
     elif current_user.role == 'registrar':
-        context['verification_requests'] = by_status(REQUEST_VERIFICATION)
-        context['preparation_requests'] = by_status(DOCUMENT_PREPARATION)
-        context['queued_requests'] = preparation_by_internal_status(QUEUED)
-        context['active_requests'] = preparation_by_internal_status(ACTIVE)
-        context['pending_dependency_requests'] = preparation_by_internal_status(PENDING)
-        context['release_requests'] = by_status(READY_FOR_RELEASE)
-        context['on_hold_requests'] = by_status(ON_HOLD)
+        context['verification_requests'] = by_status(
+            REQUEST_VERIFICATION
+        )
+
+        context['preparation_requests'] = by_status(
+            DOCUMENT_PREPARATION
+        )
+
+        context['queued_requests'] = preparation_by_internal_status(
+            QUEUED
+        )
+
+        context['active_requests'] = preparation_by_internal_status(
+            ACTIVE
+        )
+
+        context['pending_dependency_requests'] = (
+            preparation_by_internal_status(PENDING)
+        )
+
+        context['release_requests'] = by_status(
+            READY_FOR_RELEASE
+        )
+
+        context['on_hold_requests'] = by_status(
+            ON_HOLD
+        )
+
         context['completed_requests'] = by_status(
-            COMPLETED, DocumentRequest.date_completed.desc()
+            COMPLETED,
+            DocumentRequest.date_completed.desc()
         )
-        context['rejected_requests'] = by_status(REJECTED)
 
+        context['rejected_requests'] = by_status(
+            REJECTED
+        )
+
+        # Shared HRRN queue
         schedule = calculate_hrrn_schedule()
+
         context['hrrn_schedule'] = schedule
-        context['hrrn_by_request'] = {item.request_id: item for item in schedule}
+
+        context['hrrn_by_request'] = {
+            item.request_id: item
+            for item in schedule
+        }
+
         context['next_hrrn_request_id'] = (
-            schedule[0].request_id if schedule else None
+            schedule[0].request_id
+            if schedule
+            else None
         )
 
-    return render_template('modals/staffside.html', **context)
+    return render_template(
+        'modals/staff/staffside.html',
+        **context
+    )
 
 
-@staff_bp.route('/request/<int:request_id>/<action>', methods=['POST'])
+@staff_bp.route(
+    '/request/<int:request_id>/<action>',
+    methods=['POST']
+)
 @login_required
 @staff_required
 def request_action(request_id, action):
     role = current_user.role
-    if current_user.is_disabled or action not in STAFF_ACTIONS.get(role, set()):
+
+    if (
+        current_user.is_disabled
+        or action not in STAFF_ACTIONS.get(role, set())
+    ):
         flash('Your role cannot perform this action.')
         return redirect(url_for('staff.home'))
 
     note = (request.form.get('note') or '').strip()
+
     if action in REASON_REQUIRED and not note:
         flash('Please enter a reason.')
         return redirect(url_for('staff.home'))
 
-    # This route deliberately does not handle verification, preparation,
-    # release, or On Hold actions: their dedicated routes must validate
-    # the relevant conditions and ownership.
-    document = (
-        db.session.query(DocumentRequest)
-        .filter(DocumentRequest.id == request_id)
-        .with_for_update()
-        .first()
-    )
+    document = db.session.get(DocumentRequest, request_id)
+
     if document is None:
-        db.session.rollback()
         flash('Document request not found.')
         return redirect(url_for('staff.home'))
 
-    allowed_state = (
-        PAYMENT_VERIFICATION if role == 'cashier' else REQUEST_VERIFICATION
-    )
-    if document.status != allowed_state:
-        db.session.rollback()
-        flash('This action is not allowed at the current request stage.')
-        return redirect(url_for('staff.home'))
+    # Cashier actions are limited to Payment Verification.
+    if role == 'cashier':
+        if document.status != PAYMENT_VERIFICATION:
+            flash(
+                'This request is not awaiting payment verification.'
+            )
+            return redirect(url_for('staff.home'))
 
-    # No Claim requirement: any Registrar may correct or reject a request
-    # that is still in Request Verification.
+    # Registrar correction/rejection actions are limited
+    # to Request Verification.
+    elif role == 'registrar':
+        if document.status != REQUEST_VERIFICATION:
+            flash(
+                'This request is not awaiting document request verification.'
+            )
+            return redirect(url_for('staff.home'))
+
     try:
         change_request_state(
             request_id=request_id,
@@ -138,12 +201,10 @@ def request_action(request_id, action):
             actor=current_user,
             note=note,
         )
-        flash('Request status updated successfully.')
+
+        flash('Request updated successfully.')
+
     except ValueError as error:
-        db.session.rollback()
         flash(str(error))
-    except Exception:
-        db.session.rollback()
-        raise
 
     return redirect(url_for('staff.home'))

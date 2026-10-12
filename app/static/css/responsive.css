@@ -1,0 +1,227 @@
+/* ==========================================================
+   responsive.css  —  LDRS responsive overrides
+   MUST be linked AFTER redo.css and style.css in base.html.
+   Breakpoints: 1200 (laptop/tablet landscape), 1024 (registrar
+   stacks), 768 (tablet portrait), 600 (phones).
+   ========================================================== */
+
+/* ---------- Global safety nets ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+img, svg, video { max-width: 100%; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; overflow-x: hidden; }
+
+/* Tables that are wider than their card scroll inside the card,
+   never the whole page */
+.dashboard,
+.dashboard-card {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ---------- Landing page: wide screens, keep modal clear of text ---------- */
+@media (min-width: 1201px) and (max-width: 1599px) {
+    .modal-container { right: 6%; }
+}
+
+/* ---------- ≤1200px: landing page stacks ---------- */
+@media (max-width: 1200px) {
+    .landing-wrapper {
+        flex-direction: column;
+        justify-content: center;
+        align-items: stretch;
+        gap: 2rem;
+        min-height: auto;
+        padding: 2.5rem 1.25rem;
+    }
+
+    .brand-landing {
+        margin-left: 0;
+        max-width: 100%;
+    }
+
+    .brand-landing h1 {
+        font-size: clamp(2rem, 7vw, 4.25rem);
+        white-space: normal;
+    }
+
+    .brand-landing p {
+        font-size: clamp(1rem, 2.4vw, 1.4rem);
+        max-width: 100%;
+        text-align: left;
+    }
+
+    .eyebrow span { font-size: clamp(0.95rem, 2.5vw, 1.5rem); }
+
+    .branding-panel {
+        max-width: 100%;
+        padding: 1rem 0;
+    }
+    .branding-panel img { width: min(14rem, 60%); }
+
+    /* login / signup box drops into the normal flow */
+    .modal-container {
+        position: static;
+        transform: none;
+        width: 100%;
+        max-width: 440px;
+        margin: 0 auto;
+        padding: 1.75rem;
+    }
+}
+
+/* ---------- ≤1024px: registrar dashboard stacks ---------- */
+@media (max-width: 1024px) {
+    .registrar-container-wrapper {
+        flex-direction: column;
+        min-height: auto;
+        overflow: visible;
+        padding: 0.75rem;
+        gap: 1rem;
+    }
+
+    .container-left,
+    .container-right {
+        flex: none;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .container-right {
+        border-left: none;
+        border-top: 1px solid #eef0f3;
+        padding-top: 1rem;
+    }
+
+    .container-right .dashboard-card { height: auto; }
+
+    .dashboard-wrapper-staff { padding: 1.25rem; }
+
+    /* Tables keep a sensible minimum width and scroll sideways in the card.
+       Same specificity as the original rules, so source order wins. */
+    .dashboard-card table,
+    .staff-list-table,
+    .requests-table {
+        min-width: 640px;
+    }
+
+    .dashboard-card table tbody {
+        min-height: 300px;
+        max-height: 360px;
+    }
+}
+
+/* ---------- ≤768px: tablet portrait ---------- */
+@media (max-width: 768px) {
+    .navbar { padding: 0.75rem 1rem; }
+    .navbar-logo { width: min(70%, 280px); }
+
+    .dashboard-wrapper,
+    .dashboard-wrapper-staff {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .dashboard { padding: 1.25rem; }
+
+    .dashboard-header,
+    .profile-header {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    /* Tab bars scroll instead of overflowing */
+    .tab-nav {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+    .tab-link {
+        white-space: nowrap;
+        flex: 0 0 auto;
+    }
+}
+
+/* ---------- ≤600px: phones ---------- */
+@media (max-width: 600px) {
+    /* forms go single column */
+    .form-grid { grid-template-columns: 1fr; }
+
+    /* 16px inputs stop iOS zooming on focus; 44px tap targets */
+    .form-group input,
+    .form-group select,
+    .form-group textarea,
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="date"],
+    input[type="number"],
+    select,
+    textarea {
+        font-size: 16px;
+        min-height: 44px;
+        width: 100%;
+    }
+
+    .btn-primary,
+    .btn-primary-staff,
+    .btn-secondary,
+    .btn-outline,
+    .btn-danger,
+    .tab-link {
+        min-height: 44px;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* stacked secondary button shouldn't carry its desktop left margin */
+    .btn-secondary { margin-left: 0; }
+
+    .dashboard-header,
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dashboard-header .btn-primary,
+    .profile-header .btn-primary,
+    .profile-header .btn-secondary { width: 100%; text-align: center; }
+
+    .dashboard { padding: 1rem; border-radius: 8px; }
+
+    .modal-container {
+        padding: 1.25rem;
+        border-radius: 10px;
+    }
+    .modal-container img { height: 3rem; }
+    .auth-view h1 { font-size: 1.5rem; }
+
+    .dashboard-card table tbody {
+        min-height: 240px;
+        max-height: 320px;
+    }
+
+    .empty-state { padding: 2rem 0.5rem; }
+
+    .footer-base { font-size: 0.8rem; text-align: center; }
+
+    /* file upload (OR photo) is full width and easy to tap */
+    input[type="file"] { width: 100%; font-size: 16px; }
+}
+
+/* ---------- Touch devices: no sticky hover states ---------- */
+@media (hover: none) {
+    .requests-table tbody tr:hover,
+    .pending_reqtab tbody tr:hover:not(.empty-row),
+    .form-flow-table tbody tr:hover:not(.empty-row),
+    .complete_tab tbody tr:hover:not(.empty-row),
+    .expired_tab tbody tr:hover:not(.empty-row),
+    .staff-list-table tbody tr:hover:not(.empty-row) {
+        background-color: transparent;
+    }
+}
+
+/* ---------- Respect reduced-motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+}

@@ -1,3 +1,6 @@
+
+{% include "partials/_flash.html" %}
+
 <section class="dashboard">
     <h2>New Document Request</h2>
 
@@ -11,6 +14,7 @@
                 <th>Action</th>
             </tr>
         </thead>
+
         <tbody>
             {% for doc in document_types %}
             <tr>
@@ -52,6 +56,7 @@
             <h2 id="request-title-{{ doc.id }}">
                 Document Request
             </h2>
+
             <button
                 type="button"
                 class="request-modal-close"
@@ -79,14 +84,26 @@
                 <h3>Payment Instructions</h3>
 
                 <ol>
-                    <li>Pay the required document processing fee using the payment method authorized by the Registrar or Cashier.</li>
-                    <li>Keep your official receipt or proof of payment.</li>
-                    <li>Upload a clear image or PDF of your receipt below.</li>
-                    <li>Submit your request and wait for Cashier verification.</li>
+                    <li>
+                        Pay the required document processing fee
+                        using the payment method authorized by
+                        the Registrar or Cashier.
+                    </li>
+                    <li>
+                        Keep your official receipt or proof of payment.
+                    </li>
+                    <li>
+                        Upload a clear image or PDF of your receipt below.
+                    </li>
+                    <li>
+                        Submit your request and wait for Cashier verification.
+                    </li>
                 </ol>
 
                 <p>
-                    <strong>Note:</strong> Uploading a receipt does not automatically verify your payment.
+                    <strong>Note:</strong>
+                    Uploading a receipt does not automatically
+                    verify your payment.
                 </p>
 
                 <div class="form-group">

@@ -1,33 +1,254 @@
+<section class="dashboard">
+    <h2>New Document Request</h2>
 
-    <section class="dashboard">
-        {% if document_types %}
-        <table class="requests-table">
-            <thead>
-                <tr>
-                    <th>Document Type</th>
-                    <th>Fee</th>
-                    <th>Description</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for doc in document_types %}
-                <tr>
-                    <td>{{ doc.name }}</td>
-                    <td>₱{{ '%.2f'|format(doc.fee) }}</td>
-                    <td>{{ doc.description or '—' }}</td>
-                    <td>
-                        <form method="POST" action="{{ url_for('student.submit_request', doc_type_id=doc.id) }}">
-                            <button type="submit" class="btn-primary">Request</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <div class="empty-state">
-            <p>No document types are available to request right now.</p>
+    {% if document_types %}
+    <table class="requests-table">
+        <thead>
+            <tr>
+                <th>Document Type</th>
+                <th>Fee</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doc in document_types %}
+            <tr>
+                <td>{{ doc.name }}</td>
+                <td>₱{{ '%.2f'|format(doc.fee) }}</td>
+                <td>{{ doc.description or '—' }}</td>
+                <td>
+                    <button
+                        type="button"
+                        class="btn-primary"
+                        onclick="openRequestModal('{{ doc.id }}')">
+                        Request
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+    <div class="empty-state">
+        <p>No document types are available right now.</p>
+    </div>
+    {% endif %}
+</section>
+
+<!-- Payment and Receipt Popups -->
+{% for doc in document_types %}
+<div
+    id="request-modal-{{ doc.id }}"
+    class="request-modal-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="request-title-{{ doc.id }}"
+    hidden>
+
+    <div class="request-modal-content">
+        <div class="request-modal-header">
+            <h2 id="request-title-{{ doc.id }}">
+                Document Request
+            </h2>
+            <button
+                type="button"
+                class="request-modal-close"
+                aria-label="Close popup"
+                onclick="closeRequestModal('{{ doc.id }}')">
+                &times;
+            </button>
         </div>
-        {% endif %}
-    </section>
+
+        <form
+            method="POST"
+            action="{{ url_for('student.submit_request', doc_type_id=doc.id) }}"
+            enctype="multipart/form-data">
+
+            <div class="request-modal-body">
+                <h3>{{ doc.name }}</h3>
+
+                <p>
+                    <strong>Processing Fee:</strong>
+                    ₱{{ '%.2f'|format(doc.fee) }}
+                </p>
+
+                <hr>
+
+                <h3>Payment Instructions</h3>
+
+                <ol>
+                    <li>Pay the required document processing fee using the payment method authorized by the Registrar or Cashier.</li>
+                    <li>Keep your official receipt or proof of payment.</li>
+                    <li>Upload a clear image or PDF of your receipt below.</li>
+                    <li>Submit your request and wait for Cashier verification.</li>
+                </ol>
+
+                <p>
+                    <strong>Note:</strong> Uploading a receipt does not automatically verify your payment.
+                </p>
+
+                <div class="form-group">
+                    <label for="receipt-{{ doc.id }}">
+                        Upload Payment Receipt
+                    </label>
+
+                    <input
+                        type="file"
+                        id="receipt-{{ doc.id }}"
+                        name="receipt"
+                        accept=".jpg,.jpeg,.png,.pdf"
+                        required>
+
+                    <small>
+                        Accepted formats: JPG, PNG, PDF.
+                        Maximum file size: 5 MB.
+                    </small>
+                </div>
+            </div>
+
+            <div class="request-modal-footer">
+                <button
+                    type="button"
+                    class="btn-secondary"
+                    onclick="closeRequestModal('{{ doc.id }}')">
+                    Cancel
+                </button>
+
+                <button type="submit" class="btn-primary">
+                    Submit Request
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endfor %}
+
+<style>
+.request-modal-overlay[hidden] {
+    display: none;
+}
+
+.request-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.request-modal-content {
+    background: white;
+    color: #222;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 10px;
+    padding: 24px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
+}
+
+.request-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.request-modal-header h2 {
+    margin: 0;
+}
+
+.request-modal-close {
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.request-modal-body {
+    margin-top: 20px;
+}
+
+.request-modal-body h3 {
+    margin-bottom: 10px;
+}
+
+.request-modal-body ol {
+    padding-left: 22px;
+    line-height: 1.7;
+}
+
+.request-modal-body .form-group {
+    margin-top: 20px;
+}
+
+.request-modal-body input[type="file"] {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.request-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+@media (max-width: 600px) {
+    .request-modal-content {
+        padding: 18px;
+    }
+
+    .request-modal-footer {
+        flex-wrap: wrap;
+    }
+}
+</style>
+
+<script>
+function openRequestModal(id) {
+    const modal = document.getElementById(
+        'request-modal-' + id
+    );
+
+    if (modal) {
+        modal.hidden = false;
+    }
+}
+
+function closeRequestModal(id) {
+    const modal = document.getElementById(
+        'request-modal-' + id
+    );
+
+    if (modal) {
+        modal.hidden = true;
+    }
+}
+
+document.querySelectorAll('.request-modal-overlay')
+    .forEach(modal => {
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.hidden = true;
+            }
+        });
+    });
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        document.querySelectorAll('.request-modal-overlay')
+            .forEach(modal => {
+                modal.hidden = true;
+            });
+    }
+});
+</script>

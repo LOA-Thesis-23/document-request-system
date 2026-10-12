@@ -1,56 +1,138 @@
-    <section class="dashboard">
-        <h2>My Requests</h2>
 
-        {% if requests %}
-<table class="requests-table">
-    <thead>
-        <tr>
-            <th>Request Type</th>
-            <th>Date Submitted</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for req in requests %}
-        <tr>
-            <td>{{ req.document_type.name }}</td>
-            <td>{{ req.date_requested.strftime('%b %d, %Y') }}</td>
-  <td>
-    <span class="status-badge status-{{ req.status|lower|replace(' ', '-') }}">{{ req.status }}</span>
-    {% if req.status == 'For Correction' and req.correction_note %}
-        <div class="correction-note">{{ req.correction_note }}</div>
-    {% elif req.status == 'Rejected' and req.remarks %}
-        <div class="correction-note">{{ req.remarks }}</div>
-    {% endif %}
-</td>
-<td>
-    {% if req.status == 'Submitted' %}
-    <form method="POST" action="{{ url_for('student.mark_paid', request_id=req.id) }}" style="display:inline;">
-        <button type="submit" class="btn-outline">I've Paid</button>
-    </form>
-    <form method="POST" action="{{ url_for('student.cancel_request', request_id=req.id) }}" style="display:inline;" onsubmit="return confirm('Cancel this request?');">
-        <button type="submit" class="btn-danger">Cancel</button>
-    </form>
-    {% elif req.status == 'For Correction' %}
-    <form method="POST" action="{{ url_for('student.resubmit_request', request_id=req.id) }}" style="display:inline;">
-        <button type="submit" class="btn-outline">Resubmit</button>
-    </form>
-    {% elif req.status == 'Ready for Release' %}
-    <!-- QR generation/email not built yet -->
-    <button type="button" class="btn-outline" disabled title="Coming soon">Generate QR</button>
+<section class="dashboard">
+    <h2>My Requests</h2>
+
+    {% if requests %}
+    <table class="requests-table">
+        <thead>
+            <tr>
+                <th>Request Type</th>
+                <th>Date Submitted</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for req in requests %}
+            <tr>
+                <!-- Document Type -->
+                <td>
+                    {{ req.document_type.name }}
+                </td>
+
+                <!-- Date Submitted -->
+                <td>
+                    {{ req.date_requested.strftime('%b %d, %Y') }}
+                </td>
+
+                <!-- FSM Status -->
+                <td>
+                    <span class="status-badge status-{{ req.status|lower|replace(' ', '-') }}">
+                        {{ req.status }}
+                    </span>
+
+                    <!-- Payment Verification -->
+                    {% if req.status == 'Payment Verification' %}
+                        <div class="correction-note">
+                            Awaiting payment verification.
+                        </div>
+
+                    <!-- Request Verification -->
+                    {% elif req.status == 'Request Verification' %}
+                        <div class="correction-note">
+                            Your payment has been verified.
+                            Your request is being reviewed.
+                        </div>
+
+                    <!-- Document Preparation -->
+                    {% elif req.status == 'Document Preparation' %}
+                        <div class="correction-note">
+                            Your document is being prepared.
+                        </div>
+
+                    <!-- For Correction -->
+                    {% elif req.status == 'For Correction' %}
+                        <div class="correction-note">
+                            {{ req.correction_note or 'Please review and correct your request.' }}
+                        </div>
+
+                    <!-- On Hold -->
+                    {% elif req.status == 'On Hold' %}
+                        <div class="correction-note">
+                            Processing is temporarily on hold.
+                        </div>
+
+                    <!-- Ready for Release -->
+                    {% elif req.status == 'Ready for Release' %}
+                        <div class="correction-note">
+                            Your document is ready for claiming.
+                        </div>
+
+                    <!-- Completed -->
+                    {% elif req.status == 'Completed' %}
+                        <div class="correction-note">
+                            Your document has been released.
+                        </div>
+
+                    <!-- Rejected -->
+                    {% elif req.status == 'Rejected' %}
+                        <div class="correction-note">
+                            {{ req.remarks or 'Your document request was rejected.' }}
+                        </div>
+                    {% endif %}
+                </td>
+
+                <!-- Available Actions -->
+                <td>
+                    {% if req.status == 'Payment Verification' %}
+                        <span>Pending verification</span>
+
+                    {% elif req.status == 'Request Verification' %}
+                        <span>Under review</span>
+
+                    {% elif req.status == 'Document Preparation' %}
+                        <span>Processing</span>
+
+                    {% elif req.status == 'For Correction' %}
+                        <button
+                            type="button"
+                            class="btn-outline"
+                            disabled
+                            title="Correction submission is not yet connected">
+                            Resubmit
+                        </button>
+
+                    {% elif req.status == 'On Hold' %}
+                        <span>On Hold</span>
+
+                    {% elif req.status == 'Ready for Release' %}
+                        <button
+                            type="button"
+                            class="btn-outline"
+                            disabled
+                            title="QR claiming is not yet available">
+                            Generate QR
+                        </button>
+
+                    {% elif req.status == 'Completed' %}
+                        <span>Completed</span>
+
+                    {% elif req.status == 'Rejected' %}
+                        <span>Rejected</span>
+
+                    {% else %}
+                        <span>Unavailable</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
     {% else %}
-    <button type="button" class="btn-outline" disabled>Generate QR</button>
-    {% endif %}
-</td>
-
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-        {% else %}
         <div class="empty-state">
             <p>You haven't submitted any requests yet.</p>
         </div>
-        {% endif %}
-    </section>
+    {% endif %}
+</section>

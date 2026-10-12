@@ -1,3 +1,4 @@
+{% include "partials/_flash.html" %}
 {% extends "base.html" %}
 
 
@@ -6,9 +7,9 @@
     
     <a class="btn-primary-staff" href="{{ url_for('auth.logout') }}">LOG OUT USER</a>
         {% if role == 'registrar' %}
-            {% include "/modals/registrarstaff.html" %}
+            {% include "/modals/staff/registrarstaff.html" %}
         {% elif role == 'cashier' %}
-            {% include "/modals/cashierstaff.html" %}
+            {% include "/modals/staff/cashierstaff.html" %}
         {% endif %}
 </div>
 {% endblock %}

@@ -878,3 +878,10 @@
     width: 1.25rem;
     height: 1.25rem;
 }
+
+
+/* ===== Flash Messages ===== */
+.alert-auth_error   { color: #991b1b; }
+.alert-auth_success  { color: #065f46; }
+.alert-error        {  color: #991b1b; }
+.alert-success      { color: #065f46; }

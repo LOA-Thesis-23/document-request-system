@@ -1,5 +1,4 @@
 
-from pathlib import Path
 from uuid import uuid4
 
 from flask import (
@@ -13,6 +12,7 @@ from flask import (
 )
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
+from app.services.receipt_storage import upload_receipt, delete_receipt, ReceiptStorageError
 
 from app import db
 from app.models import Student, DocumentType, DocumentRequest
@@ -87,16 +87,17 @@ def _save_receipt(upload):
             'The file does not match its selected format.'
         )
 
-    upload_folder = Path(current_app.instance_path) / 'receipts'
-    upload_folder.mkdir(parents=True, exist_ok=True)
-
     stored_filename = f'{uuid4().hex}.{extension}'
-    saved_path = upload_folder / stored_filename
+    storage_path = f'{current_user.id}/{stored_filename}'
+    mime_type = {
+        'jpg': 'image/jpeg',
+        'jpeg': 'image/jpeg',
+        'png': 'image/png',
+        'pdf': 'application/pdf',
+    }[extension]
+    upload_receipt(storage_path, content, mime_type)
+    return storage_path
 
-    with saved_path.open('wb') as file:
-        file.write(content)
-
-    return stored_filename, saved_path
 
 
 @student_bp.route('/home')
@@ -138,16 +139,16 @@ def submit_request(doc_type_id):
     doc_type = db.get_or_404(DocumentType, doc_type_id)
 
     receipt = request.files.get('receipt')
-    saved_path = None
+    storage_path = None
 
     try:
-        receipt_filename, saved_path = _save_receipt(receipt)
+        storage_path = _save_receipt(receipt)
 
         new_request = DocumentRequest(
             student_id=current_user.id,
             document_type_id=doc_type.id,
             status=PAYMENT_VERIFICATION,
-            or_photo_path=receipt_filename,
+            or_photo_path=storage_path,
             payment_method='Online'
         )
 
@@ -159,14 +160,17 @@ def submit_request(doc_type_id):
             'Your receipt is awaiting Cashier verification.'
         )
 
-    except ValueError as error:
+    except (ValueError, ReceiptStorageError) as error:
         flash(str(error))
 
     except Exception:
         db.session.rollback()
 
-        if saved_path is not None:
-            saved_path.unlink(missing_ok=True)
+        if storage_path is not None:
+            try:
+                delete_receipt(storage_path)
+            except ReceiptStorageError:
+                current_app.logger.exception('Could not clean up uploaded receipt')
 
         current_app.logger.exception(
             'Document request submission failed'

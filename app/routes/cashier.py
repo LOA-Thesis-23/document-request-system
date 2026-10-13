@@ -12,7 +12,6 @@ from flask import (
 )
 from flask_login import login_required, current_user
 
-from app.services.receipt_storage import get_receipt, ReceiptStorageError
 from app import db
 from app.decorators import staff_required
 from app.models import DocumentRequest

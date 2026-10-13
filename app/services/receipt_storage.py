@@ -2,7 +2,6 @@
 import os
 from urllib.parse import quote
 
-import requests
 
 
 class ReceiptStorageError(Exception):

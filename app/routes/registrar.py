@@ -1,5 +1,5 @@
 
-from flask import Blueprint, redirect, url_for, flash, request
+from flask import Blueprint, current_app, redirect, url_for, flash, request
 from flask_login import login_required, current_user
 
 from app import db
@@ -212,9 +212,14 @@ def start_document_preparation(request_id):
             raise ValueError("There are no eligible queued requests.")
 
         if next_request.request_id != request_id:
+            current_app.logger.info(
+                "Start rejected: request %s is not next (expected %s)",
+                request_id,
+                next_request.request_id,
+            )
             raise ValueError(
-                f"HRRN selected request #{next_request.request_id} "
-                "as the next request. Start that request first."
+                "This request is not next in the queue. "
+                "Please start the top request first."
             )
 
         start_preparation(

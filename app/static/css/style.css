@@ -885,3 +885,24 @@
 .alert-auth_success  { color: #065f46; }
 .alert-error        {  color: #991b1b; }
 .alert-success      { color: #065f46; }
+
+
+
+/* ===== View Request Details ===== */
+
+.btn-link-view {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    color: #004285;
+    font-size: 0.85rem;
+    text-align:left;
+    margin-top: 1rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.btn-link-view:hover {
+    color: #003166;
+}

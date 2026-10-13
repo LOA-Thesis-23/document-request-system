@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request,current_app
 from flask_login import login_required, current_user
 
 from app import db
@@ -126,21 +126,29 @@ def home():
         context['rejected_requests'] = by_status(
             REJECTED
         )
-
-        # Shared HRRN queue
+     # Shared HRRN queue (backend only; used for ordering, not displayed)
         schedule = calculate_hrrn_schedule()
 
-        context['hrrn_schedule'] = schedule
-
-        context['hrrn_by_request'] = {
-            item.request_id: item
+        rank_by_request = {
+            item.request_id: item.rank
             for item in schedule
         }
+
+        # Order the queued list by HRRN rank. Unranked requests go last,
+        # still in FCFS order because Python's sort is stable.
+        context['queued_requests'].sort(
+            key=lambda r: rank_by_request.get(r.id, float('inf'))
+        )
 
         context['next_hrrn_request_id'] = (
             schedule[0].request_id
             if schedule
             else None
+        )
+
+        current_app.logger.info(
+            "HRRN schedule: %s",
+            [(i.request_id, i.rank, round(i.response_ratio, 2)) for i in schedule]
         )
 
     return render_template(

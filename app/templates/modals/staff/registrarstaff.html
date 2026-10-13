@@ -92,58 +92,46 @@
             </table>
 
             <!-- 2. Document Preparation: Queued -->
-            <table class="form-flow-table">
-                <thead>
-                    <tr><th colspan="5"><h2>Document Preparation — Queued</h2></th></tr>
-                    <tr>
-                        <th>ID</th><th>Name</th><th>Type</th>
-                        <th>HRRN Priority</th><th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if queued_requests %}
-                        {% for req in queued_requests %}
-                            {% set score = hrrn_by_request.get(req.id) %}
-                            <tr>
-                                <td>{{ req.student.student_number or req.student.id }}</td>
-                                <td>{{ req.student.full_name }}</td>
-                                <td>{{ req.document_type.name }}</td>
-                                <td>
-                                    {% if score %}
-                                        <strong>Rank #{{ score.rank }}</strong>
-                                        <div>WT: {{ '%.1f'|format(score.waiting_time) }} min</div>
-                                        <div>Remaining EPT: {{ '%.1f'|format(score.remaining_ept) }} min</div>
-                                        <div>RR: {{ '%.2f'|format(score.response_ratio) }}</div>
-                                    {% else %}
-                                        Not ranked
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if req.id == next_hrrn_request_id %}
-                                        <form method="POST"
-                                              action="{{ url_for('registrar.start_document_preparation', request_id=req.id) }}"
-                                              style="display:inline;"
-                                              onsubmit="return confirm('Start preparing this HRRN-selected request?');">
-                                            <button type="submit">Start</button>
-                                        </form>
-                                    {% else %}
-                                        <button type="button" disabled
-                                                title="Waiting for its turn in the HRRN schedule">Waiting</button>
-                                    {% endif %}
-                                    <form method="POST" action="{{ url_for('registrar.hold_request', request_id=req.id) }}"
-                                              style="display:inline;"
-                                              onsubmit="var r = prompt('Reason for placing this request On Hold?'); if (r === null || !r.trim()) return false; this.elements['reason'].value = r.trim();">
-                                            <input type="hidden" name="reason">
-                                            <button type="submit">On Hold</button>
-                                        </form>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr class="empty-row"><td colspan="5">No queued requests.</td></tr>
-                    {% endif %}
-                </tbody>
-            </table>
+<table class="form-flow-table">
+    <thead>
+        <tr><th colspan="4"><h2>Document Preparation — Queued</h2></th></tr>
+        <tr>
+            <th>ID</th><th>Name</th><th>Type</th><th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if queued_requests %}
+            {% for req in queued_requests %}
+                <tr>
+                    <td>{{ req.student.student_number or req.student.id }}</td>
+                    <td>{{ req.student.full_name }}</td>
+                    <td>{{ req.document_type.name }}</td>
+                    <td>
+                        {% if req.id == next_hrrn_request_id %}
+                            <form method="POST"
+                                  action="{{ url_for('registrar.start_document_preparation', request_id=req.id) }}"
+                                  style="display:inline;"
+                                  onsubmit="return confirm('Start preparing this request?');">
+                                <button type="submit">Start</button>
+                            </form>
+                        {% else %}
+                            <button type="button" disabled
+                                    title="Waiting for its turn in the queue">Waiting</button>
+                        {% endif %}
+                        <form method="POST" action="{{ url_for('registrar.hold_request', request_id=req.id) }}"
+                              style="display:inline;"
+                              onsubmit="var r = prompt('Reason for placing this request On Hold?'); if (r === null || !r.trim()) return false; this.elements['reason'].value = r.trim();">
+                            <input type="hidden" name="reason">
+                            <button type="submit">On Hold</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr class="empty-row"><td colspan="4">No queued requests.</td></tr>
+        {% endif %}
+    </tbody>
+</table>
 
             <!-- 3. Document Preparation: Active Preparation -->
             <table class="form-flow-table">
@@ -308,7 +296,7 @@
                                     <span>Assigned to another registrar</span>
                                 {% endif %}
                                 {% if req.hold_reason %}
-                                    <span title="{{ req.hold_reason }}">View reason</span>
+                                    <span class="btn-link-view" title="{{ req.hold_reason }}" onclick="alert(this.title)">View reason</span>
                                 {% endif %}
 
                             </td>
